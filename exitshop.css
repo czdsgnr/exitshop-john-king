@@ -183,6 +183,9 @@ a.shopping-basket .shopping-basket-items-count {
   #top-menu ul.navbar-nav > li.yamm-fw:hover { box-shadow: none !important; background: transparent !important; }
   /* zbytkový dropdown-chevron u kategorií skrýt (dropdowny jsou pryč) */
   #top-menu ul.navbar-nav > li.yamm-fw .nav-link > .bi[class*="chevron"] { display: none !important; }
+  /* nativní „více" overflow tlačítko (#navbar-mismatched-items) skrýt – ve sticky
+     naskakovalo k košíku jako hamburger; kategorie jsou stejně ve „Všechny kategorie" */
+  #navbar-mismatched-items { display: none !important; }
 }
 
 .jk-allcats { position: static !important; }
