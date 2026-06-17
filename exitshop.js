@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.1';
+  JK.version = '0.6.2';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -315,6 +315,43 @@
     window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(fitCategories, 150); }, { passive: true });
   }
 
+  /* ============================================================
+     G) Homepage itembox karty – doplnit skladovost + zelené tlačítko „Do košíku"
+        (itembox šablona je nemá; tlačítko skládáme z product ID + ceny –
+        používá nativní třídy add-to-cart-js, ověřit že reálně přidá do košíku)
+     ============================================================ */
+  function buildItemboxExtras() {
+    Array.prototype.forEach.call(document.querySelectorAll('.itembox-item'), function (item) {
+      if (item.querySelector('.jk-ib-bottom')) return;
+      var nameA = item.querySelector('a.product_name');
+      var imgA = item.querySelector('a.fancybox_detail_pointer:not(.product_name)') || item.querySelector('a[href*="/p/"]');
+      var href = (nameA && nameA.getAttribute('href')) || (imgA && imgA.getAttribute('href')) || '';
+      var m = href.match(/\/p\/(\d+)-/);
+      var pid = m ? m[1] : null;
+      var cena = item.querySelector('.cena');
+      var price = ((item.querySelector('.itembox-price') || {}).textContent || '').replace(/\s/g, '');
+      var name = nameA ? nameA.textContent.trim() : '';
+      var thumb = (item.querySelector('img') || {}).getAttribute('src') || '';
+      if (!pid || !cena) return;
+
+      var bottom = el('div', 'jk-ib-bottom jk-injected');
+      bottom.appendChild(el('div', 'jk-ib-stock', '<span class="jk-ib-dot"></span>Skladem'));
+      var footer = el('div', 'jk-ib-footer');
+      footer.appendChild(cena); // přesun ceny do footeru
+      var btn = el('div', 'jk-ib-cart product-add-to-shopping-basket add-to-cart-js add-to-cart-js-without-child btn btn-primary', 'Do košíku');
+      btn.setAttribute('name', 'p' + pid);
+      btn.setAttribute('data-product-id', pid + '-0');
+      btn.setAttribute('data-oaaction', 'cart');
+      btn.setAttribute('data-product-name', name);
+      btn.setAttribute('data-product-minimal-order-amount', '1');
+      btn.setAttribute('data-product-price', price);
+      btn.setAttribute('data-product-thumbnail', thumb);
+      footer.appendChild(btn);
+      bottom.appendChild(footer);
+      item.appendChild(bottom);
+    });
+  }
+
   ready(function () {
     document.documentElement.classList.add('jk-ready');
     try { buildUSP(); } catch (e) { console.warn('[JK] USP', e); }
@@ -323,7 +360,10 @@
     try { buildLoginPopup(); } catch (e) { console.warn('[JK] loginpopup', e); }
     try { buildStickyBar(); } catch (e) { console.warn('[JK] stickybar', e); }
     try { initUnfold(); } catch (e) { console.warn('[JK] unfold', e); }
+    try { buildItemboxExtras(); } catch (e) { console.warn('[JK] itembox', e); }
     initSticky();
+    // itembox karty se někdy dorenderují po loadu (carousely) → ještě jednou
+    window.addEventListener('load', function () { setTimeout(function () { try { buildItemboxExtras(); } catch (e) {} }, 300); });
     console.log('[JK] exitshop.js loaded v' + JK.version);
   });
 })();
