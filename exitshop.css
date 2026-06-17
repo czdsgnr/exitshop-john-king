@@ -219,4 +219,44 @@ a.shopping-basket .shopping-basket-items-count {
   /* USP marquee o kousek nižší */
   .jk-usp { height: 38px; }
   .jk-usp__item { padding: 0 20px; font-size: 12px; }
+
+  /* nativní accordion v hamburgeru – pryč se starým pink pozadím */
+  #top-menu .yamm-dropdown-menu,
+  #top-menu .yamm-content { background: #fff !important; }
+  #top-menu .cat-l-second-name a { color: var(--jk-black) !important; font-weight: 600; text-decoration: none !important; }
+  #top-menu .cat-l-second-img-wrap img { border-radius: 8px; }
 }
+
+/* ------------------------------------------------------------
+   9) LOGIN POPUP (hover na ikonu účtu)
+   Vlevo přihlášení (POST na /customer, CSRF z cookie csrf_cookie_name),
+   vpravo benefity účtu + „Vytvořit účet" (/customer/register).
+   Heslo jde jen na vlastní shop (stejně jako nativní login).
+   ------------------------------------------------------------ */
+.header-shop-customer-button { position: relative; }
+.jk-login-pop {
+  display: none; position: absolute; top: 100%; right: 0; margin-top: 14px; z-index: 1200;
+  width: 600px; max-width: calc(100vw - 32px); background: #fff; border: 1px solid var(--jk-line);
+  border-radius: 18px; box-shadow: 0 26px 60px rgba(0,0,0,.18); overflow: hidden;
+}
+.jk-login-pop.jk-open { display: flex; }
+.jk-login-pop__col { padding: 24px 26px; flex: 1 1 50%; box-sizing: border-box; }
+.jk-login-pop__right { background: #FBF8F3; border-left: 1px solid var(--jk-line); }
+.jk-login-pop h3 { font-size: 18px; font-weight: 700; margin: 0 0 4px; color: var(--jk-black); }
+.jk-login-pop__sub { font-size: 13px; color: var(--jk-muted); margin: 0 0 16px; }
+.jk-login-pop label { display: block; font-size: 13px; font-weight: 600; margin: 0 0 5px; color: var(--jk-text); }
+.jk-login-pop input[type=text], .jk-login-pop input[type=password] {
+  width: 100%; height: 44px; border: 1px solid var(--jk-line); border-radius: 12px; padding: 0 14px;
+  font-size: 14px; margin-bottom: 12px; background: #fff; box-sizing: border-box;
+}
+.jk-login-pop input[type=text]:focus, .jk-login-pop input[type=password]:focus { outline: none; border-color: var(--jk-pink); }
+.jk-login-pop__submit { width: 100%; height: 46px; border: 0; border-radius: var(--jk-radius-pill); background: var(--jk-black); color: #fff; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 2px; }
+.jk-login-pop__submit:hover { filter: brightness(1.18); }
+.jk-login-pop__forgot { display: inline-block; margin-top: 11px; font-size: 13px; color: var(--jk-muted); text-decoration: none; }
+.jk-login-pop__forgot:hover { color: var(--jk-pink); }
+.jk-login-pop__benefits { list-style: none; padding: 0; margin: 0 0 20px; }
+.jk-login-pop__benefits li { position: relative; padding: 7px 0 7px 28px; font-size: 14px; color: var(--jk-text); line-height: 1.35; }
+.jk-login-pop__benefits li::before { content: '✓'; position: absolute; left: 0; top: 6px; width: 18px; height: 18px; border-radius: 50%; background: var(--jk-pink); color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.jk-login-pop__reg { display: flex; align-items: center; justify-content: center; width: 100%; height: 46px; border-radius: var(--jk-radius-pill); background: var(--jk-pink); color: #fff !important; font-weight: 600; font-size: 15px; text-decoration: none !important; }
+.jk-login-pop__reg:hover { filter: brightness(1.08); }
+@media (max-width: 991.98px) { .jk-login-pop { display: none !important; } }

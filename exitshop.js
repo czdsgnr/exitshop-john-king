@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.4.0';
+  JK.version = '0.5.0';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -134,6 +134,60 @@
   }
 
   /* ============================================================
+     C2) Login popup na hover ikony účtu
+        vlevo přihlášení (POST /customer + CSRF z cookie),
+        vpravo benefity + „Vytvořit účet" (/customer/register)
+     ============================================================ */
+  function cookie(n) { var m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? decodeURIComponent(m.pop()) : ''; }
+  function csrfToken() { return cookie('csrf_cookie_name') || (document.querySelector('input[name=ci_csrf_token]') || {}).value || ''; }
+
+  function buildLoginPopup() {
+    var acc = document.querySelector('a.customer-button');
+    var wrap = document.querySelector('.header-shop-customer-button');
+    if (!acc || !wrap || document.querySelector('.jk-login-pop')) return;
+    // přihlášený uživatel – login popup netřeba
+    if (document.querySelector('a[href*="logout"], a[href*="odhlasit"], a[href*="odhlaseni"]')) return;
+
+    var base = acc.getAttribute('href'); // .../customer
+    var pop = el('div', 'jk-login-pop jk-injected',
+      '<div class="jk-login-pop__col jk-login-pop__left">' +
+        '<h3>Přihlášení</h3><p class="jk-login-pop__sub">Vítejte zpět! Přihlaste se ke svému účtu.</p>' +
+        '<form action="' + base + '" method="post" accept-charset="utf-8">' +
+          '<label for="jk-login-email">Váš email</label>' +
+          '<input type="text" name="email" id="jk-login-email" autocomplete="username">' +
+          '<label for="jk-login-pwd">Vaše heslo</label>' +
+          '<input type="password" name="password" id="jk-login-pwd" autocomplete="current-password">' +
+          '<input type="hidden" name="ci_csrf_token" value="">' +
+          '<button type="submit" name="login" value="1" class="jk-login-pop__submit">Přihlásit se</button>' +
+        '</form>' +
+        '<a class="jk-login-pop__forgot" href="' + base + '">Zapomenuté heslo?</a>' +
+      '</div>' +
+      '<div class="jk-login-pop__col jk-login-pop__right">' +
+        '<h3>Nemáte účet?</h3><p class="jk-login-pop__sub">S účtem John King získáte:</p>' +
+        '<ul class="jk-login-pop__benefits">' +
+          '<li>Rychlejší nákup bez vyplňování údajů</li><li>Přehled objednávek a faktur</li>' +
+          '<li>Věrnostní slevy a akce dříve</li><li>Uložené oblíbené a adresy</li>' +
+        '</ul>' +
+        '<a class="jk-login-pop__reg" href="' + base + '/register">Vytvořit účet</a>' +
+      '</div>');
+    wrap.appendChild(pop);
+
+    // CSRF token (CodeIgniter) – z cookie, nastav teď i těsně před odesláním
+    var tokenInput = pop.querySelector('input[name=ci_csrf_token]');
+    tokenInput.value = csrfToken();
+    pop.querySelector('form').addEventListener('submit', function () { tokenInput.value = csrfToken(); });
+
+    // řízený hover (žádné blikání)
+    var timer;
+    function open() { clearTimeout(timer); pop.classList.add('jk-open'); }
+    function close() { timer = setTimeout(function () { pop.classList.remove('jk-open'); }, 180); }
+    acc.addEventListener('mouseenter', open);
+    acc.addEventListener('mouseleave', close);
+    pop.addEventListener('mouseenter', open);
+    pop.addEventListener('mouseleave', close);
+  }
+
+  /* ============================================================
      D) Sticky lišta – logo (vlevo) + akce (vpravo) do #top-menu,
         viditelné jen ve stavu .jk-sticky (viz CSS sekce 6)
      ============================================================ */
@@ -200,6 +254,7 @@
     try { buildUSP(); } catch (e) { console.warn('[JK] USP', e); }
     try { buildCartPill(); } catch (e) { console.warn('[JK] cart', e); }
     try { buildAllCats(); } catch (e) { console.warn('[JK] allcats', e); }
+    try { buildLoginPopup(); } catch (e) { console.warn('[JK] loginpopup', e); }
     try { buildStickyBar(); } catch (e) { console.warn('[JK] stickybar', e); }
     initSticky();
     console.log('[JK] exitshop.js loaded v' + JK.version);
