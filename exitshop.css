@@ -254,6 +254,10 @@ a.shopping-basket .shopping-basket-items-count {
   a#logo img { height: 32px !important; width: auto !important; max-width: 118px !important; }
   /* POZOR: žádný margin-left:auto – pral by se s flex-grow loga a vytlačil košík ven z řádku.
      Logo (flex:1 1 0%) vyplní místo a košík přirozeně zarovná doprava, v řádku. */
+  /* !!! HLAVNÍ VINÍK přetékajícího košíku: theme dává cart sloupci position:relative; LEFT:60px
+     → posouval ho o 60px doprava, mimo viewport. Žádný flex/grid s tím nehnul. Přebít left:0. */
+  header .header-middle .header-shop-basket-button,
+  header .header-middle .header-shop-customer-button { left: 0 !important; right: auto !important; }
   header .header-middle .header-shop-basket-button { order: 1; display: flex !important; align-items: center; gap: 6px; flex: 0 0 auto !important; margin-left: 0 !important; }
   header .header-middle .header-shop-customer-button { flex: 0 0 auto !important; min-width: 0; max-width: none; margin-left: 0 !important; }
   /* extra pojistka: hlavička nikdy nepřeteče do strany */
