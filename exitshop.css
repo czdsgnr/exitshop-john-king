@@ -313,3 +313,11 @@ a.shopping-basket .shopping-basket-items-count {
 /* když je aktivní účet/login popup, NEukazuj nativní hover košíku
    (účet i košík sdílí wrapper, jinak se otevře košík při hoveru účtu) */
 .header-shop-customer-button.jk-acc-hover #hover-cart { display: none !important; }
+
+/* ------------------------------------------------------------
+   10) HOMEPAGE – hlavní karusel: banner vyplní celý slide (bez paddingu),
+   zaoblené rohy (14px) + jemný stín zůstávají.
+   ------------------------------------------------------------ */
+#owl-slideshow .slideshow-slide.item { padding: 0 !important; }
+#owl-slideshow .slideshow-slide.item img,
+#owl-slideshow .slider-link img { width: 100% !important; height: auto !important; display: block; border-radius: inherit; }
