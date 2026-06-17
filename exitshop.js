@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.8';
+  JK.version = '0.6.9';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -211,8 +211,9 @@
     var closeBtn = el('button', 'jk-login-pop__close', '&times;');
     closeBtn.setAttribute('aria-label', 'Zavřít');
     pop.appendChild(closeBtn);
-    function openModal() { clearTimeout(timer); pop.classList.add('jk-open'); document.documentElement.classList.add('jk-login-open'); }
-    function closeModal() { pop.classList.remove('jk-open'); document.documentElement.classList.remove('jk-login-open'); }
+    // přesun do <body> (kořenový stacking kontext), jinak ho backdrop na <html> překryje
+    function openModal() { clearTimeout(timer); document.body.appendChild(pop); pop.classList.add('jk-open'); document.documentElement.classList.add('jk-login-open'); }
+    function closeModal() { pop.classList.remove('jk-open'); document.documentElement.classList.remove('jk-login-open'); if (window.innerWidth < 992) wrap.appendChild(pop); }
     closeBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); });
     acc.addEventListener('click', function (e) {
       if (window.innerWidth >= 992) return; // desktop = hover, klik nech projít na /customer
