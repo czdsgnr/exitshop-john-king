@@ -224,8 +224,21 @@ a.shopping-basket .shopping-basket-items-count {
   header .header-middle .logotype { order: 0; }
   header .header-middle .header-shop-basket-button { order: 1; margin-left: auto; display: flex; align-items: center; gap: 12px; }
   header .header-middle .search-div { order: 5; margin-top: 16px !important; }   /* search celá šířka dole + mezera (ať nezasahuje) */
-  /* burger jako čistá ikona vedle loga */
-  .navbar-toggler-top .navbar-toggler { border: 0 !important; box-shadow: none !important; padding: 8px !important; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+
+  /* skrýt absolutní burger kategorie (lítal vpravo a přesahoval do hledání) */
+  #top-menu nav.navbar > button.navbar-toggler { display: none !important; }
+
+  /* burger v hlavičce vedle loga – zviditelnit + dát mu hamburger ikonu (cílí na stejné menu) */
+  header .header-middle .navbar-toggler-top { display: flex !important; align-items: center; }
+  .navbar-toggler-top .navbar-toggler {
+    display: inline-flex !important; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border: 0 !important; box-shadow: none !important; padding: 0 !important; background: none; color: var(--jk-black);
+  }
+  .navbar-toggler-top .navbar-toggler::before {
+    content: ''; width: 24px; height: 24px; background: currentColor;
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='3' y='6' width='18' height='2' rx='1'/><rect x='3' y='11' width='18' height='2' rx='1'/><rect x='3' y='16' width='18' height='2' rx='1'/></svg>") center/contain no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='3' y='6' width='18' height='2' rx='1'/><rect x='3' y='11' width='18' height='2' rx='1'/><rect x='3' y='16' width='18' height='2' rx='1'/></svg>") center/contain no-repeat;
+  }
 
   /* „Všechny kategorie" pilulka + panel jsou jen pro desktop */
   .jk-allcats { display: none !important; }
