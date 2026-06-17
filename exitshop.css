@@ -163,5 +163,29 @@ a.shopping-basket .shopping-basket-items-count {
 }
 
 /* ------------------------------------------------------------
-   7) MEGA MENU (Yamm dropdown) — TODO (další iterace)
+   7) MEGA MENU (Yamm dropdown) – čisté bílé, on-brand
+   Panel: ul.yamm-dropdown-menu › li › div.yamm-content (dřív pink #FF9CC3)
+   Blok:  li.cat-l-second › .cat-l-second-img-wrap (náhled) + .cat-l-second-name (titulek + pod-odkazy)
    ------------------------------------------------------------ */
+#top-menu .yamm-dropdown-menu {
+  border: 0 !important; box-shadow: 0 18px 44px rgba(0,0,0,.12) !important;
+  border-radius: 0 0 18px 18px !important; overflow: hidden; margin-top: 0 !important;
+}
+#top-menu .yamm-content { background: #fff !important; padding: 22px 26px !important; }
+#top-menu .yamm-content .row { row-gap: 2px; }
+
+#top-menu .cat-l-second { margin: 0 !important; padding: 8px 10px !important; border-radius: 12px; transition: background .15s ease; align-items: center; }
+#top-menu .cat-l-second:hover { background: var(--jk-pink-soft) !important; }
+
+#top-menu .cat-l-second-img-wrap img {
+  width: 100%; border-radius: 10px; background: #F7F4EF; border: 1px solid var(--jk-line); object-fit: contain;
+}
+
+#top-menu .cat-l-second-name a { color: var(--jk-black) !important; font-weight: 600 !important; font-size: 14px; text-decoration: none !important; line-height: 1.35; }
+#top-menu .cat-l-second:hover .cat-l-second-name a { color: var(--jk-pink) !important; }
+
+/* případné pod-odkazy (· oddělené) menší a tlumené */
+#top-menu .cat-l-second-name small,
+#top-menu .cat-l-second-name p,
+#top-menu .cat-l-second-name .sub,
+#top-menu .cat-l-second-name span span { color: var(--jk-muted) !important; font-weight: 400 !important; font-size: 12.5px !important; }
