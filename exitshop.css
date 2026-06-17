@@ -233,7 +233,7 @@ a.shopping-basket .shopping-basket-items-count {
    (pilulka „Všechny kategorie" + panel) schováme, košík zkompaktníme.
    ------------------------------------------------------------ */
 @media (max-width: 991.98px) {
-  header .header-middle { padding: 12px 0 14px !important; }
+  header .header-middle { padding: 12px 12px 14px !important; }
 
   /* === MOBILNÍ HLAVIČKA: burger | logo ........ účet | košík ; search dole === */
   .header-cms-icon { display: none !important; }              /* info ikonu pryč */
@@ -248,9 +248,11 @@ a.shopping-basket .shopping-basket-items-count {
   }
   header .header-middle .navbar-toggler-top { order: -1; }
   /* logo bere zbytek místa (flex:1) → tlačí košík dovnitř, košík nemůže přetéct */
-  header .header-middle .logotype { order: 0; flex: 1 1 auto !important; min-width: 0; margin-left: 6px; }
-  a#logo img { height: 34px !important; width: auto !important; max-width: 135px; }
-  header .header-middle .header-shop-basket-button { order: 1; display: flex !important; align-items: center; gap: 10px; }
+  header .header-middle .logotype { order: 0; flex: 1 1 0% !important; min-width: 0 !important; margin-left: 6px; overflow: hidden; }
+  a#logo img { height: 32px !important; width: auto !important; max-width: 118px !important; }
+  header .header-middle .header-shop-basket-button { order: 1; display: flex !important; align-items: center; gap: 8px; flex: 0 0 auto !important; margin-left: auto; }
+  /* účet+košík wrapper nesmí přetéct vpravo */
+  header .header-middle .header-shop-customer-button { flex: 0 0 auto !important; min-width: 0; max-width: none; }
   header .header-middle .search-div { order: 5; flex: 0 0 100% !important; max-width: 100% !important; margin-top: 14px !important; }
 
   /* sbalená lišta kategorií = ŽÁDNÝ prázdný pruh pod hledáním (ukáže se po klepnutí na burger) */
@@ -292,7 +294,34 @@ a.shopping-basket .shopping-basket-items-count {
   #top-menu .yamm-content { background: #fff !important; }
   #top-menu .cat-l-second-name a { color: var(--jk-black) !important; font-weight: 600; text-decoration: none !important; }
   #top-menu .cat-l-second-img-wrap img { border-radius: 8px; }
+
+  /* nativní rozbalovací menu schované – na mobilu používáme vlastní full-screen .jk-mobmenu */
+  #top-menu #navbarSupportedContent { display: none !important; }
 }
+
+/* ------------------------------------------------------------
+   8b) MOBILNÍ FULL-SCREEN MENU (.jk-mobmenu – injektuje exitshop.js)
+   přes celou stránku, kategorie rozbalovací na podkategorie (accordion)
+   ------------------------------------------------------------ */
+.jk-mobmenu {
+  position: fixed; inset: 0; z-index: 4000; background: #fff; display: flex; flex-direction: column;
+  transform: translateX(-100%); transition: transform .26s ease; visibility: hidden;
+}
+html.jk-mobmenu-open .jk-mobmenu { transform: translateX(0); visibility: visible; }
+html.jk-mobmenu-open { overflow: hidden; }
+.jk-mobmenu__head { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--jk-line); }
+.jk-mobmenu__title { font-size: 18px; font-weight: 800; color: var(--jk-black); }
+.jk-mobmenu__close { background: none; border: 0; padding: 0; width: 40px; height: 40px; font-size: 30px; line-height: 1; color: var(--jk-black); cursor: pointer; }
+.jk-mobmenu__list { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.jk-mobmenu__item { display: flex; flex-wrap: wrap; align-items: stretch; border-bottom: 1px solid var(--jk-line); }
+.jk-mobmenu__cat { flex: 1 1 auto; min-width: 0; padding: 15px 18px; font-size: 16px; font-weight: 600; color: var(--jk-black) !important; text-decoration: none !important; display: flex; align-items: center; }
+.jk-mobmenu__toggle { flex: 0 0 auto; width: 58px; background: none; border: 0; border-left: 1px solid var(--jk-line); color: var(--jk-muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform .2s ease, color .2s ease; }
+.jk-mobmenu__item.jk-open .jk-mobmenu__toggle { transform: rotate(180deg); color: var(--jk-pink); }
+.jk-mobmenu__subs { flex: 0 0 100%; display: none; background: #FBF8F3; padding: 4px 0 10px; }
+.jk-mobmenu__item.jk-open .jk-mobmenu__subs { display: block; }
+.jk-mobmenu__subs a { display: block; padding: 11px 18px 11px 32px; font-size: 14px; color: var(--jk-text) !important; text-decoration: none !important; border-top: 1px solid #efeae1; }
+.jk-mobmenu__subs a:first-child { border-top: 0; }
+@media (min-width: 992px) { .jk-mobmenu { display: none !important; } }
 
 /* ------------------------------------------------------------
    9) LOGIN POPUP (hover na ikonu účtu)

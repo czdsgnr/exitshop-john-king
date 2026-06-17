@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.6';
+  JK.version = '0.6.7';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -105,6 +105,7 @@
       cats.push({ name: a.textContent.trim().replace(/\s+/g, ' '), href: href, subs: subs });
     });
     if (!cats.length) return;
+    JK.cats = cats; // pro mobilní full-screen menu
 
     var MAX = 5;
     var grid = cats.filter(function (c) { return c.subs.length > 0; });
@@ -370,11 +371,66 @@
     window.addEventListener('load', function () { setTimeout(run, 300); });
   }
 
+  /* ============================================================
+     H) Mobilní full-screen menu (kategorie + rozbalovací podkategorie)
+        z JK.cats; burger v hlavičce ho otevírá (nativní menu je na mobilu CSS skryté)
+     ============================================================ */
+  function buildMobileMenu() {
+    if (document.querySelector('.jk-mobmenu')) return;
+    var cats = JK.cats || [];
+    if (!cats.length) return;
+
+    var overlay = el('div', 'jk-mobmenu jk-injected');
+    var head = el('div', 'jk-mobmenu__head', '<span class="jk-mobmenu__title">Kategorie</span>');
+    var closeBtn = el('button', 'jk-mobmenu__close', '&times;');
+    closeBtn.setAttribute('aria-label', 'Zavřít');
+    head.appendChild(closeBtn);
+
+    var list = el('div', 'jk-mobmenu__list');
+    cats.forEach(function (c) {
+      var item = el('div', 'jk-mobmenu__item');
+      var a = el('a', 'jk-mobmenu__cat'); a.href = c.href; a.textContent = c.name;
+      item.appendChild(a);
+      if (c.subs && c.subs.length) {
+        var tog = el('button', 'jk-mobmenu__toggle', '▼'); tog.setAttribute('aria-label', 'Rozbalit');
+        var subs = el('div', 'jk-mobmenu__subs');
+        c.subs.forEach(function (s) { var sa = el('a'); sa.href = s.href; sa.textContent = s.name; subs.appendChild(sa); });
+        var allA = el('a', 'jk-mobmenu__all'); allA.href = c.href; allA.textContent = 'Zobrazit vše';
+        subs.appendChild(allA);
+        tog.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); item.classList.toggle('jk-open'); });
+        item.appendChild(tog);
+        item.appendChild(subs);
+      }
+      list.appendChild(item);
+    });
+
+    overlay.appendChild(head);
+    overlay.appendChild(list);
+    document.body.appendChild(overlay);
+
+    function open() { document.documentElement.classList.add('jk-mobmenu-open'); }
+    function close() { document.documentElement.classList.remove('jk-mobmenu-open'); }
+    JK.openMobMenu = open; JK.closeMobMenu = close;
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+    // burger v hlavičce (capture, ať předběhnu nativní toggler) → otevři moje menu
+    var burger = document.querySelector('.navbar-toggler-top .navbar-toggler');
+    if (burger) {
+      burger.addEventListener('click', function (e) {
+        if (window.innerWidth >= 992) return;
+        e.preventDefault(); e.stopPropagation();
+        open();
+      }, true);
+    }
+  }
+
   ready(function () {
     document.documentElement.classList.add('jk-ready');
     try { buildUSP(); } catch (e) { console.warn('[JK] USP', e); }
     try { buildCartPill(); } catch (e) { console.warn('[JK] cart', e); }
     try { buildAllCats(); } catch (e) { console.warn('[JK] allcats', e); }
+    try { buildMobileMenu(); } catch (e) { console.warn('[JK] mobmenu', e); }
     try { buildLoginPopup(); } catch (e) { console.warn('[JK] loginpopup', e); }
     try { buildStickyBar(); } catch (e) { console.warn('[JK] stickybar', e); }
     try { initUnfold(); } catch (e) { console.warn('[JK] unfold', e); }
