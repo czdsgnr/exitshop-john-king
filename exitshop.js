@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.0';
+  JK.version = '0.6.1';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -255,12 +255,14 @@
      ============================================================ */
   function initSticky() {
     var THRESHOLD = 120;
-    var ticking = false;
+    var ticking = false, last = null;
     function onScroll() {
       if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(function () {
-        document.documentElement.classList.toggle('jk-sticky', window.pageYOffset > THRESHOLD);
+        var s = window.pageYOffset > THRESHOLD;
+        document.documentElement.classList.toggle('jk-sticky', s);
+        if (s !== last) { last = s; if (JK.refitCategories) JK.refitCategories(); }  // jiná dostupná šířka → přepočítat
         ticking = false;
       });
     }
@@ -280,15 +282,37 @@
       dest.appendChild(li);
     });
   }
+  // ukáže jen tolik kategorií, kolik se vejde CELÝCH (žádné ořezání/půlení), zbytek skryje.
+  // na mobilu (<992) ukáže všechny (hamburger accordion).
+  function fitCategories() {
+    var ul = document.querySelector('#top-menu ul.navbar-nav');
+    var collapse = document.querySelector('#navbarSupportedContent');
+    if (!ul || !collapse) return;
+    var cats = Array.prototype.slice.call(ul.querySelectorAll(':scope > li.yamm-fw'));
+    cats.forEach(function (li) { li.style.display = ''; });           // reset
+    if (window.innerWidth < 992) return;                              // mobil: všechny
+    var pill = ul.querySelector('.jk-allcats');
+    var avail = collapse.clientWidth - (pill ? pill.offsetWidth : 0) - 8;
+    var used = 0, full = false;
+    cats.forEach(function (li) {
+      if (full) { li.style.display = 'none'; return; }
+      used += li.offsetWidth;
+      if (used > avail) { li.style.display = 'none'; full = true; }
+    });
+  }
   function initUnfold() {
-    unfoldCategories();
+    function refresh() { unfoldCategories(); fitCategories(); }
+    JK.refitCategories = refresh;
+    refresh();
     var mm = document.querySelector('#navbar-mismatched-items');
     if (mm && window.MutationObserver) {
       var t;
-      new MutationObserver(function () { clearTimeout(t); t = setTimeout(unfoldCategories, 50); })
+      new MutationObserver(function () { clearTimeout(t); t = setTimeout(refresh, 60); })
         .observe(mm, { childList: true, subtree: true });
     }
-    window.addEventListener('load', function () { setTimeout(unfoldCategories, 200); });
+    window.addEventListener('load', function () { setTimeout(refresh, 200); });
+    var rt;
+    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(fitCategories, 150); }, { passive: true });
   }
 
   ready(function () {
