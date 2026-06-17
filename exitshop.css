@@ -42,8 +42,11 @@ header > nav.main-nav { display: none !important; }   /* starý utility řádek 
 /* ------------------------------------------------------------
    4) HLAVNÍ ŘÁDEK (logo | search | účet | košík)
    ------------------------------------------------------------ */
-header .header-middle { padding: 20px 0 16px; }   /* vzduch nahoře + spodní padding ~16px */
-a#logo img { height: 46px !important; width: auto !important; }
+header .header-middle { padding: 20px 0 36px; }   /* vzduch nahoře + víc místa dole (~36px) */
+/* logo svisle vystředit (mělo margin na h2 → bylo o ~10px výš = „cik cak") */
+header .header-middle .logotype { display: flex; align-items: center; }
+header .header-middle .logotype h2 { margin: 0 !important; line-height: 0; }
+a#logo img { height: 46px !important; width: auto !important; display: block; }
 
 @media (min-width: 992px) {
   header .header-middle .row.menu-gutters { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 28px; }
