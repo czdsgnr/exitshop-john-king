@@ -432,28 +432,28 @@ a.shopping-basket .shopping-basket-items-count {
    ------------------------------------------------------------ */
 .itembox-item {
   position: relative !important; overflow: visible !important; display: flex; flex-direction: column; height: 100%; box-sizing: border-box;
-  background: #fff !important; border: 1px solid var(--jk-line) !important; border-radius: 16px !important; padding: 12px !important; box-shadow: none !important;
+  background: #fff !important; border: 1px solid var(--jk-line) !important; border-radius: 16px !important; padding: 0 !important; box-shadow: none !important;
   transition: box-shadow .18s ease, transform .18s ease;
 }
 .itembox-item:hover { box-shadow: 0 8px 24px rgba(0,0,0,.10) !important; transform: translateY(-3px); }
-.itembox-item > a:not(.product_name) { display: block; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 12px; margin-bottom: 10px; }
-.itembox-item > a:not(.product_name) img { width: 100% !important; height: 100% !important; object-fit: contain !important; display: block; }
-.itembox-item .product_name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; line-height: 1.3; font-size: 14px; font-weight: 600; color: var(--jk-black) !important; text-decoration: none; margin: 0 0 8px; }
+/* obrázková zóna + spodní dělící linka přes celou šířku (jako v návrhu) */
+.itembox-item > a:not(.product_name) { display: flex; align-items: center; justify-content: center; aspect-ratio: 1 / 1; overflow: hidden; padding: 14px; margin: 0 !important; border-bottom: 1px solid var(--jk-line); border-radius: 16px 16px 0 0; }
+.itembox-item > a:not(.product_name) img { max-width: 100% !important; max-height: 100% !important; width: auto !important; height: auto !important; object-fit: contain !important; display: block; }
+.itembox-item .product_name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; line-height: 1.3; font-size: 15px; font-weight: 700; color: var(--jk-black) !important; text-decoration: none; margin: 0; padding: 14px 16px 0; }
 .itembox-item .cena { margin: 0 !important; }
-.itembox-item .itembox-price { font-size: 18px; font-weight: 700; color: var(--jk-black); }
+.itembox-item .itembox-price { font-size: 20px; font-weight: 800; color: var(--jk-black); }
 .itembox-item .itembox-strips { position: static !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
-.itembox-item .itembox-strips .new-product-strip { position: absolute !important; top: 8px !important; left: 8px !important; right: auto !important; bottom: auto !important; z-index: 4 !important; margin: 0 !important; }
-.itembox-item .itembox-strips .discount-strip { position: absolute !important; top: 8px !important; right: 8px !important; left: auto !important; bottom: auto !important; z-index: 4 !important; margin: 0 !important; }
+.itembox-item .itembox-strips .new-product-strip { position: absolute !important; top: 12px !important; left: 12px !important; right: auto !important; bottom: auto !important; z-index: 4 !important; margin: 0 !important; }
+.itembox-item .itembox-strips .discount-strip { position: absolute !important; top: 12px !important; right: 12px !important; left: auto !important; bottom: auto !important; z-index: 4 !important; margin: 0 !important; }
 
-/* doplněk (injektuje exitshop.js): skladovost + zelené tlačítko „Do košíku" + zarovnání dolů */
-.itembox-item .jk-ib-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
-.itembox-item .jk-ib-stock { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #1aa251; }
+/* spodní info blok (injektuje exitshop.js): skladovost + cena + VELKÉ zelené tlačítko přes celou šířku */
+.itembox-item .jk-ib-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 16px; }
+.itembox-item .jk-ib-stock { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #1aa251; }
 .itembox-item .jk-ib-dot { width: 7px; height: 7px; border-radius: 50%; background: #1aa251; flex: 0 0 auto; }
-.itembox-item .jk-ib-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .itembox-item .jk-ib-cart {
-  background: #a1c900 !important; color: #fff !important; border: 0 !important; border-radius: 999px !important;
-  padding: 9px 16px !important; font-size: 13px; font-weight: 700; line-height: 1; white-space: nowrap; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 6px; box-shadow: none !important; transition: background .15s ease, transform .15s ease;
+  width: 100%; background: #a1c900 !important; color: #fff !important; border: 0 !important; border-radius: 12px !important;
+  padding: 13px 18px !important; font-size: 15px; font-weight: 700; line-height: 1; white-space: nowrap; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: none !important; transition: background .15s ease, transform .15s ease;
 }
-.itembox-item .jk-ib-cart::before { content: ""; width: 15px; height: 15px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z'/%3E%3C/svg%3E") center/contain no-repeat; flex: 0 0 auto; }
+.itembox-item .jk-ib-cart::before { content: ""; width: 17px; height: 17px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z'/%3E%3C/svg%3E") center/contain no-repeat; flex: 0 0 auto; }
 .itembox-item .jk-ib-cart:hover { background: #69920f !important; transform: translateY(-1px); }

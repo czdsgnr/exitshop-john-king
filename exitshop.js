@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.2';
+  JK.version = '0.6.3';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -337,8 +337,7 @@
 
       var bottom = el('div', 'jk-ib-bottom jk-injected');
       bottom.appendChild(el('div', 'jk-ib-stock', '<span class="jk-ib-dot"></span>Skladem'));
-      var footer = el('div', 'jk-ib-footer');
-      footer.appendChild(cena); // přesun ceny do footeru
+      bottom.appendChild(cena); // cena na vlastní řádek
       var btn = el('div', 'jk-ib-cart product-add-to-shopping-basket add-to-cart-js add-to-cart-js-without-child btn btn-primary', 'Do košíku');
       btn.setAttribute('name', 'p' + pid);
       btn.setAttribute('data-product-id', pid + '-0');
@@ -347,8 +346,7 @@
       btn.setAttribute('data-product-minimal-order-amount', '1');
       btn.setAttribute('data-product-price', price);
       btn.setAttribute('data-product-thumbnail', thumb);
-      footer.appendChild(btn);
-      bottom.appendChild(footer);
+      bottom.appendChild(btn); // velké tlačítko přes celou šířku pod cenou
       item.appendChild(bottom);
       added++;
     });
