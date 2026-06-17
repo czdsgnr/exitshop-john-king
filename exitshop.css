@@ -1,0 +1,77 @@
+/* ============================================================
+   John King — Exitshop custom styles
+   Repo: czdsgnr/exitshop-john-king  →  GitHub Pages
+   Načítá se přes dev-loader (viz README) na všech stránkách.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1) DESIGN TOKENS
+   ------------------------------------------------------------ */
+:root {
+  /* barvy */
+  --jk-black:        #0E0E0E;   /* pilulky, USP lišta, text */
+  --jk-pink:         #EC1C8C;   /* akcent – tečky, badge, podtržení */
+  --jk-pink-soft:    #FCE4F1;   /* světlé růžové pozadí (hover) */
+  --jk-cream:        #F1ECE4;   /* teplé pozadí stránky (volitelné) */
+  --jk-search-bg:    #EFEAE3;   /* pozadí fulltext pole */
+  --jk-text:         #0E0E0E;
+  --jk-muted:        #8A8A8A;   /* placeholder / sekundární text */
+  --jk-line:         #E6E1D8;   /* jemné linky / oddělovače */
+  --jk-white:        #FFFFFF;
+
+  /* tvar */
+  --jk-radius-pill:  999px;
+  --jk-radius-lg:    18px;
+  --jk-radius-md:    12px;
+
+  /* rozměry headeru (dle návrhu) */
+  --jk-header-h:     104px;     /* hlavní řada (logo+search+košík) */
+  --jk-usp-h:        44px;      /* USP lišta */
+  --jk-nav-h:        56px;      /* lišta s kategoriemi */
+  --jk-sticky-h:     64px;      /* kondenzovaná sticky verze */
+
+  /* typografie */
+  --jk-font: 'Fira Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ------------------------------------------------------------
+   2) USP / NOTIFICATION BAR
+   Exitshop má #notification-bar (dnes růžové pozadí #eb5c94).
+   Návrh: černé pozadí, bílý text, růžové tečky mezi položkami.
+   Marquee (posun) a markup řeší exitshop.js – tady jen vzhled.
+   ------------------------------------------------------------ */
+#notification-bar {
+  background-color: var(--jk-black) !important;
+  color: var(--jk-white) !important;
+  border: 0 !important;
+}
+#notification-bar a,
+#notification-bar span,
+#notification-bar p {
+  color: var(--jk-white) !important;
+}
+
+/* ------------------------------------------------------------
+   3) HLAVIČKA — placeholder
+   Přesné selektory doplníme po inspekci živého DOMu shopu.
+   Cílový vzhled:
+   - logo vlevo, uprostřed fulltext (kulaté, světle béžové),
+     vpravo ikony účet + oblíbené (srdce s počtem) + košík (černá pilulka)
+   - pod tím lišta kategorií: pilulka „Všechny kategorie" + textové odkazy,
+     aktivní položka podtržená růžově
+   ------------------------------------------------------------ */
+/* TODO(header): restyle loga, fulltextu, košíku a lišty kategorií
+   až podle reálné struktury (.header, .navbar, .cart, .search …) */
+
+/* ------------------------------------------------------------
+   4) STICKY / KONDENZOVANÁ VERZE — placeholder
+   Po scrollu: jen 1 řada (logo + nav + ikony + košík pill, výška 64px).
+   exitshop.js přidá .jk-sticky na header při scrollu.
+   ------------------------------------------------------------ */
+/* TODO(sticky): .jk-sticky header { height: var(--jk-sticky-h); … } */
+
+/* ------------------------------------------------------------
+   5) MEGA MENU — placeholder
+   Rozbalená kategorie pod lištou.
+   ------------------------------------------------------------ */
+/* TODO(megamenu) */
