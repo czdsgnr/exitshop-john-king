@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.3';
+  JK.version = '0.6.4';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -356,6 +356,20 @@
     }
   }
 
+  // Carousely/widgety se dorenderují postupně (ne všechny itembox karty jsou v DOM hned).
+  // Sleduj DOM a doplň tlačítko každé kartě, jakmile se objeví – jinak část karet zůstane bez tlačítka.
+  function initItembox() {
+    function run() { try { buildItemboxExtras(); } catch (e) { console.warn('[JK] itembox', e); } }
+    run();
+    if (window.MutationObserver) {
+      var t;
+      new MutationObserver(function () { clearTimeout(t); t = setTimeout(run, 250); })
+        .observe(document.body, { childList: true, subtree: true });
+    }
+    [600, 1500, 3000].forEach(function (ms) { setTimeout(run, ms); });
+    window.addEventListener('load', function () { setTimeout(run, 300); });
+  }
+
   ready(function () {
     document.documentElement.classList.add('jk-ready');
     try { buildUSP(); } catch (e) { console.warn('[JK] USP', e); }
@@ -364,10 +378,8 @@
     try { buildLoginPopup(); } catch (e) { console.warn('[JK] loginpopup', e); }
     try { buildStickyBar(); } catch (e) { console.warn('[JK] stickybar', e); }
     try { initUnfold(); } catch (e) { console.warn('[JK] unfold', e); }
-    try { buildItemboxExtras(); } catch (e) { console.warn('[JK] itembox', e); }
+    try { initItembox(); } catch (e) { console.warn('[JK] itembox', e); }
     initSticky();
-    // itembox karty se někdy dorenderují po loadu (carousely) → ještě jednou
-    window.addEventListener('load', function () { setTimeout(function () { try { buildItemboxExtras(); } catch (e) {} }, 300); });
     console.log('[JK] exitshop.js loaded v' + JK.version);
   });
 })();
