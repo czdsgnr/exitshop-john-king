@@ -250,9 +250,12 @@ a.shopping-basket .shopping-basket-items-count {
   /* logo bere zbytek místa (flex:1) → tlačí košík dovnitř, košík nemůže přetéct */
   header .header-middle .logotype { order: 0; flex: 1 1 0% !important; min-width: 0 !important; margin-left: 6px; overflow: hidden; }
   a#logo img { height: 32px !important; width: auto !important; max-width: 118px !important; }
-  header .header-middle .header-shop-basket-button { order: 1; display: flex !important; align-items: center; gap: 8px; flex: 0 0 auto !important; margin-left: auto; }
-  /* účet+košík wrapper nesmí přetéct vpravo */
-  header .header-middle .header-shop-customer-button { flex: 0 0 auto !important; min-width: 0; max-width: none; }
+  /* POZOR: žádný margin-left:auto – pral by se s flex-grow loga a vytlačil košík ven z řádku.
+     Logo (flex:1 1 0%) vyplní místo a košík přirozeně zarovná doprava, v řádku. */
+  header .header-middle .header-shop-basket-button { order: 1; display: flex !important; align-items: center; gap: 6px; flex: 0 0 auto !important; margin-left: 0 !important; }
+  header .header-middle .header-shop-customer-button { flex: 0 0 auto !important; min-width: 0; max-width: none; margin-left: 0 !important; }
+  /* extra pojistka: hlavička nikdy nepřeteče do strany */
+  header .header-middle { overflow-x: clip; }
   header .header-middle .search-div { order: 5; flex: 0 0 100% !important; max-width: 100% !important; margin-top: 14px !important; }
 
   /* sbalená lišta kategorií = ŽÁDNÝ prázdný pruh pod hledáním (ukáže se po klepnutí na burger) */
