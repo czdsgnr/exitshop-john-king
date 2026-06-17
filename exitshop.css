@@ -337,9 +337,15 @@ a.shopping-basket .shopping-basket-items-count {
 @media (max-width: 768px) { .jk-banner-duo { flex-direction: column; gap: 14px; margin: 16px auto; } }
 
 /* ------------------------------------------------------------
-   12) USP karty (benefity na HP) – bez stínu, jen jemný border
+   12) USP karty (benefity na HP) – bez stínu + jemný border,
+   na celou šířku obsahu, mezera 32px
    ------------------------------------------------------------ */
 .usp-card { box-shadow: none !important; border: 1px solid var(--jk-line) !important; }
+.usp-cards-wrap { max-width: none !important; gap: 32px !important; }
+@media (max-width: 900px) { .usp-cards-wrap { gap: 16px !important; } }
+
+/* skrýt plovoucí sticky banner (nešel najít ve skriptech) */
+.sticky-floating-banner-fixed { display: none !important; }
 
 /* ------------------------------------------------------------
    13) PRODUKTOVÉ KARTY (výpis v kategorii) – sjednocení + modernizace
