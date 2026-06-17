@@ -42,7 +42,7 @@ header > nav.main-nav { display: none !important; }   /* starý utility řádek 
 /* ------------------------------------------------------------
    4) HLAVNÍ ŘÁDEK (logo | search | účet | košík)
    ------------------------------------------------------------ */
-header .header-middle { padding: 14px 0; }
+header .header-middle { padding: 22px 0 24px; }   /* víc vzduchu – ať není nalepené na border */
 a#logo img { height: 46px !important; width: auto !important; }
 
 @media (min-width: 992px) {
@@ -163,29 +163,35 @@ a.shopping-basket .shopping-basket-items-count {
 }
 
 /* ------------------------------------------------------------
-   7) MEGA MENU (Yamm dropdown) – čisté bílé, on-brand
-   Panel: ul.yamm-dropdown-menu › li › div.yamm-content (dřív pink #FF9CC3)
-   Blok:  li.cat-l-second › .cat-l-second-img-wrap (náhled) + .cat-l-second-name (titulek + pod-odkazy)
+   7) „VŠECHNY KATEGORIE" = jedno velké mega menu (vše konsolidováno)
+   Šablona má responsivní overflow (#navbar-mismatched-items) – kategorie co
+   se nevejdou do lišty se schovají. exitshop.js posbírá VŠECHNY kategorie
+   (li.yamm-fw) i s podkategoriemi a postaví jeden panel .jk-allmenu.
+   Nativní per-kategorie dropdowny vypínáme (řešilo „divné hovery").
    ------------------------------------------------------------ */
-#top-menu .yamm-dropdown-menu {
-  border: 0 !important; box-shadow: 0 18px 44px rgba(0,0,0,.12) !important;
-  border-radius: 0 0 18px 18px !important; overflow: hidden; margin-top: 0 !important;
+#top-menu ul.navbar-nav > li.yamm-fw .yamm-dropdown-menu,
+#navbar-mismatched-items .yamm-dropdown-menu { display: none !important; }
+
+.jk-allcats { position: static !important; }
+#top-menu .container { position: relative; }
+
+.jk-allmenu {
+  display: none; position: absolute; left: 0; right: 0; top: 100%; z-index: 1000;
+  background: #fff; border-top: 1px solid var(--jk-line); box-shadow: 0 24px 54px rgba(0,0,0,.14);
+  border-radius: 0 0 18px 18px; padding: 24px 28px 18px;
 }
-#top-menu .yamm-content { background: #fff !important; padding: 22px 26px !important; }
-#top-menu .yamm-content .row { row-gap: 2px; }
+.jk-allmenu.jk-open { display: block; }
 
-#top-menu .cat-l-second { margin: 0 !important; padding: 8px 10px !important; border-radius: 12px; transition: background .15s ease; align-items: center; }
-#top-menu .cat-l-second:hover { background: var(--jk-pink-soft) !important; }
+.jk-allmenu__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 30px; }
+.jk-allmenu__cat-title { display: inline-block; color: var(--jk-black) !important; font-weight: 700; font-size: 15px; text-decoration: none !important; margin-bottom: 5px; }
+.jk-allmenu__cat-title:hover { color: var(--jk-pink) !important; }
+.jk-allmenu__subs { font-size: 13px; line-height: 1.75; color: var(--jk-muted); }
+.jk-allmenu__subs a { color: var(--jk-muted) !important; text-decoration: none !important; }
+.jk-allmenu__subs a:hover { color: var(--jk-pink) !important; }
+.jk-allmenu__subs .sep { color: #D9D3C8; margin: 0 5px; }
+.jk-allmenu__more { color: var(--jk-pink) !important; font-weight: 600; white-space: nowrap; }
 
-#top-menu .cat-l-second-img-wrap img {
-  width: 100%; border-radius: 10px; background: #F7F4EF; border: 1px solid var(--jk-line); object-fit: contain;
-}
-
-#top-menu .cat-l-second-name a { color: var(--jk-black) !important; font-weight: 600 !important; font-size: 14px; text-decoration: none !important; line-height: 1.35; }
-#top-menu .cat-l-second:hover .cat-l-second-name a { color: var(--jk-pink) !important; }
-
-/* případné pod-odkazy (· oddělené) menší a tlumené */
-#top-menu .cat-l-second-name small,
-#top-menu .cat-l-second-name p,
-#top-menu .cat-l-second-name .sub,
-#top-menu .cat-l-second-name span span { color: var(--jk-muted) !important; font-weight: 400 !important; font-size: 12.5px !important; }
+.jk-allmenu__chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--jk-line); }
+.jk-allmenu__chips-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--jk-muted); width: 100%; margin-bottom: 4px; }
+.jk-chip { display: inline-flex; align-items: center; padding: 8px 15px; border-radius: var(--jk-radius-pill); background: #F5F1EA; color: var(--jk-black) !important; font-weight: 600; font-size: 13px; text-decoration: none !important; border: 1px solid var(--jk-line); }
+.jk-chip:hover { background: var(--jk-pink-soft); color: var(--jk-pink) !important; border-color: transparent; }

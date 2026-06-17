@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.3.0';
+  JK.version = '0.4.0';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -78,6 +78,59 @@
       '<span class="jk-allcats__grid"><i></i><i></i><i></i><i></i></span>' +
       'Všechny kategorie<span class="jk-allcats__chev">▾</span></a>');
     ul.insertBefore(li, ul.firstChild);
+    buildAllMenu(li);
+  }
+
+  // Posbírá VŠECHNY kategorie (i ty schované v overflow #navbar-mismatched-items)
+  // i s podkategoriemi a postaví jeden panel .jk-allmenu pod pilulkou.
+  function buildAllMenu(pill) {
+    var container = document.querySelector('#top-menu .container');
+    if (!container || document.querySelector('.jk-allmenu')) return;
+
+    var seen = {}, cats = [];
+    Array.prototype.forEach.call(document.querySelectorAll('#top-menu li.yamm-fw'), function (li) {
+      var a = li.querySelector(':scope > a.nav-link') || li.querySelector(':scope > a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || seen[href]) return;
+      seen[href] = 1;
+      var subs = [];
+      var dd = li.querySelector('.yamm-dropdown-menu');
+      if (dd) {
+        Array.prototype.forEach.call(dd.querySelectorAll('.cat-l-second'), function (b) {
+          var sa = b.querySelector('.cat-l-second-name a');
+          if (sa) subs.push({ name: sa.textContent.trim().replace(/\s+/g, ' '), href: sa.getAttribute('href') });
+        });
+      }
+      cats.push({ name: a.textContent.trim().replace(/\s+/g, ' '), href: href, subs: subs });
+    });
+    if (!cats.length) return;
+
+    var MAX = 5;
+    var grid = cats.filter(function (c) { return c.subs.length > 0; });
+    var chips = cats.filter(function (c) { return c.subs.length === 0; });
+
+    var gridHTML = grid.map(function (c) {
+      var sub = c.subs.slice(0, MAX).map(function (s) { return '<a href="' + s.href + '">' + s.name + '</a>'; }).join('<span class="sep">·</span>');
+      var more = c.subs.length > MAX ? '<span class="sep">·</span><a class="jk-allmenu__more" href="' + c.href + '">+' + (c.subs.length - MAX) + ' dalších</a>' : '';
+      return '<div class="jk-allmenu__cat"><a class="jk-allmenu__cat-title" href="' + c.href + '">' + c.name + '</a><div class="jk-allmenu__subs">' + sub + more + '</div></div>';
+    }).join('');
+    var chipsHTML = chips.length
+      ? '<div class="jk-allmenu__chips"><span class="jk-allmenu__chips-label">Další kategorie</span>' +
+        chips.map(function (c) { return '<a class="jk-chip" href="' + c.href + '">' + c.name + '</a>'; }).join('') + '</div>'
+      : '';
+
+    var panel = el('div', 'jk-allmenu jk-injected', '<div class="jk-allmenu__grid">' + gridHTML + '</div>' + chipsHTML);
+    container.appendChild(panel);
+
+    // řízený hover (otevři okamžitě, zavři s malou prodlevou – žádné blikání)
+    var timer;
+    function open() { clearTimeout(timer); panel.classList.add('jk-open'); }
+    function close() { timer = setTimeout(function () { panel.classList.remove('jk-open'); }, 160); }
+    pill.addEventListener('mouseenter', open);
+    pill.addEventListener('mouseleave', close);
+    panel.addEventListener('mouseenter', open);
+    panel.addEventListener('mouseleave', close);
   }
 
   /* ============================================================
