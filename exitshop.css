@@ -175,6 +175,11 @@ a.shopping-basket .shopping-basket-items-count {
   #navbar-mismatched-items .yamm-dropdown-menu {
     display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
   }
+  /* žádný „tab" box-shadow na hoverované kategorii (to byl ten divný box) */
+  #top-menu ul.navbar-nav > li.yamm-fw,
+  #top-menu ul.navbar-nav > li.yamm-fw:hover { box-shadow: none !important; background: transparent !important; }
+  /* zbytkový dropdown-chevron u kategorií skrýt (dropdowny jsou pryč) */
+  #top-menu ul.navbar-nav > li.yamm-fw .nav-link > .bi[class*="chevron"] { display: none !important; }
 }
 
 .jk-allcats { position: static !important; }
