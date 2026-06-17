@@ -335,3 +335,8 @@ a.shopping-basket .shopping-basket-items-count {
 .jk-banner-duo__item:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.10); }
 .jk-banner-duo__item img { width: 100%; height: auto; display: block; aspect-ratio: 686 / 241; object-fit: cover; }
 @media (max-width: 768px) { .jk-banner-duo { flex-direction: column; gap: 14px; margin: 16px auto; } }
+
+/* ------------------------------------------------------------
+   12) USP karty (benefity na HP) – bez stínu, jen jemný border
+   ------------------------------------------------------------ */
+.usp-card { box-shadow: none !important; border: 1px solid var(--jk-line) !important; }
