@@ -42,7 +42,7 @@ header > nav.main-nav { display: none !important; }   /* starý utility řádek 
 /* ------------------------------------------------------------
    4) HLAVNÍ ŘÁDEK (logo | search | účet | košík)
    ------------------------------------------------------------ */
-header .header-middle { padding: 20px 0 36px; }   /* vzduch nahoře + víc místa dole (~36px) */
+header .header-middle { padding-bottom: 24px !important; }   /* víc místa dole (~24px); theme má jinak padding-bottom:0 */
 /* logo svisle vystředit (mělo margin na h2 → bylo o ~10px výš = „cik cak") */
 header .header-middle .logotype { display: flex; align-items: center; }
 header .header-middle .logotype h2 { margin: 0 !important; line-height: 0; }
@@ -215,7 +215,7 @@ a.shopping-basket .shopping-basket-items-count {
    (pilulka „Všechny kategorie" + panel) schováme, košík zkompaktníme.
    ------------------------------------------------------------ */
 @media (max-width: 991.98px) {
-  header .header-middle { padding: 12px 0 10px; }
+  header .header-middle { padding: 12px 0 14px !important; }
 
   /* „Všechny kategorie" pilulka + panel jsou jen pro desktop */
   .jk-allcats { display: none !important; }
