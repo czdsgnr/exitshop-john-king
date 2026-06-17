@@ -42,20 +42,20 @@ header > nav.main-nav { display: none !important; }   /* starý utility řádek 
 /* ------------------------------------------------------------
    4) HLAVNÍ ŘÁDEK (logo | search | účet | košík)
    ------------------------------------------------------------ */
-header .header-middle { padding: 22px 0 24px; }   /* víc vzduchu – ať není nalepené na border */
+header .header-middle { padding: 20px 0 16px; }   /* vzduch nahoře + spodní padding ~16px */
 a#logo img { height: 46px !important; width: auto !important; }
 
 @media (min-width: 992px) {
   header .header-middle .row.menu-gutters { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 28px; }
   header .header-middle .logotype { flex: 0 0 auto !important; max-width: none !important; width: auto !important; }
   header .header-middle .search-div { flex: 1 1 auto !important; max-width: none !important; margin: 0 !important; order: 0 !important; }
-  header .header-middle .header-shop-basket-button { flex: 0 0 auto !important; max-width: none !important; width: auto !important; display: flex; align-items: center; gap: 14px; justify-content: flex-end; }
+  header .header-middle .header-shop-basket-button { flex: 0 0 auto !important; max-width: none !important; width: auto !important; display: flex; align-items: center; gap: 24px; justify-content: flex-end; }
 }
 
 /* --- search pilulka --- */
 .search.classic-search .w-100.position-relative { width: 100% !important; }
 .search.classic-search #searchInput {
-  height: 50px !important; border: 1px solid var(--jk-line) !important; background: var(--jk-search-bg) !important;
+  height: 48px !important; border: 1px solid var(--jk-line) !important; background: var(--jk-search-bg) !important;
   border-radius: var(--jk-radius-pill) !important; padding: 0 20px 0 48px !important; font-size: 15px; box-shadow: none !important;
 }
 .search.classic-search #searchInput::placeholder { color: var(--jk-muted); }
@@ -67,8 +67,8 @@ a#logo img { height: 46px !important; width: auto !important; }
 
 /* --- účet (ikona) --- */
 a.customer-button {
-  width: 46px; height: 46px; border-radius: 50%; display: inline-flex !important; align-items: center; justify-content: center;
-  color: var(--jk-black) !important; border: 1px solid transparent;
+  width: 48px; height: 48px; border-radius: 50%; display: inline-flex !important; align-items: center; justify-content: center;
+  color: var(--jk-black) !important; border: 1px solid transparent; flex: 0 0 auto;
 }
 a.customer-button:hover { background: var(--jk-pink-soft); }
 a.customer-button::before {
@@ -80,10 +80,11 @@ a.customer-button::before {
 /* --- košík (černá pilulka) --- */
 a.shopping-basket {
   background: var(--jk-black) !important; color: #fff !important; border-radius: var(--jk-radius-pill) !important;
-  padding: 11px 18px !important; display: inline-flex !important; align-items: center; gap: 10px; text-decoration: none !important; height: auto !important;
+  height: 48px !important; padding: 0 18px !important; display: inline-flex !important; align-items: center; gap: 10px;
+  text-decoration: none !important; flex: 0 0 auto;
 }
 a.shopping-basket:hover { filter: brightness(1.15); }
-a.shopping-basket .bi-handbag { color: #fff !important; font-size: 18px; }
+a.shopping-basket .bi-handbag { color: #fff !important; font-size: 19px !important; line-height: 1; }
 .jk-cart__label { font-weight: 600; font-size: 15px; color: #fff; }
 a.shopping-basket .shopping-basket-items-count {
   background: var(--jk-pink) !important; color: #fff !important; border-radius: var(--jk-radius-pill) !important;
@@ -169,10 +170,13 @@ a.shopping-basket .shopping-basket-items-count {
    (li.yamm-fw) i s podkategoriemi a postaví jeden panel .jk-allmenu.
    Nativní per-kategorie dropdowny vypínáme (řešilo „divné hovery").
    ------------------------------------------------------------ */
-/* jen DESKTOP – na mobilu nativní accordion v hamburgeru musí fungovat */
+/* jen DESKTOP – na mobilu nativní accordion v hamburgeru musí fungovat.
+   visibility+opacity+pointer-events, protože Yamm přebíjí display inline stylem. */
 @media (min-width: 992px) {
   #top-menu ul.navbar-nav > li.yamm-fw .yamm-dropdown-menu,
-  #navbar-mismatched-items .yamm-dropdown-menu { display: none !important; }
+  #navbar-mismatched-items .yamm-dropdown-menu {
+    display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+  }
 }
 
 .jk-allcats { position: static !important; }
@@ -260,3 +264,7 @@ a.shopping-basket .shopping-basket-items-count {
 .jk-login-pop__reg { display: flex; align-items: center; justify-content: center; width: 100%; height: 46px; border-radius: var(--jk-radius-pill); background: var(--jk-pink); color: #fff !important; font-weight: 600; font-size: 15px; text-decoration: none !important; }
 .jk-login-pop__reg:hover { filter: brightness(1.08); }
 @media (max-width: 991.98px) { .jk-login-pop { display: none !important; } }
+
+/* když je aktivní účet/login popup, NEukazuj nativní hover košíku
+   (účet i košík sdílí wrapper, jinak se otevře košík při hoveru účtu) */
+.header-shop-customer-button.jk-acc-hover #hover-cart { display: none !important; }

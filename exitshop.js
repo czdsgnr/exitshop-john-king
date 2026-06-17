@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.5.0';
+  JK.version = '0.5.1';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -177,10 +177,22 @@
     tokenInput.value = csrfToken();
     pop.querySelector('form').addEventListener('submit', function () { tokenInput.value = csrfToken(); });
 
-    // řízený hover (žádné blikání)
+    // řízený hover (žádné blikání) + potlač nativní hover košíku
+    var hoverCart = document.querySelector('#hover-cart');
     var timer;
-    function open() { clearTimeout(timer); pop.classList.add('jk-open'); }
-    function close() { timer = setTimeout(function () { pop.classList.remove('jk-open'); }, 180); }
+    function open() {
+      clearTimeout(timer);
+      pop.classList.add('jk-open');
+      wrap.classList.add('jk-acc-hover');
+      if (hoverCart) hoverCart.style.setProperty('display', 'none', 'important');
+    }
+    function close() {
+      timer = setTimeout(function () {
+        pop.classList.remove('jk-open');
+        wrap.classList.remove('jk-acc-hover');
+        if (hoverCart) hoverCart.style.removeProperty('display'); // vrátit nativní chování košíku
+      }, 180);
+    }
     acc.addEventListener('mouseenter', open);
     acc.addEventListener('mouseleave', close);
     pop.addEventListener('mouseenter', open);
