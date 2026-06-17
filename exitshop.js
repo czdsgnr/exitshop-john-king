@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.7';
+  JK.version = '0.6.8';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -201,10 +201,29 @@
         if (hoverCart) hoverCart.style.removeProperty('display'); // vrátit nativní chování košíku
       }, 180);
     }
-    acc.addEventListener('mouseenter', open);
-    acc.addEventListener('mouseleave', close);
-    pop.addEventListener('mouseenter', open);
-    pop.addEventListener('mouseleave', close);
+    // DESKTOP: hover (jen ≥992px, ať na mobilu nekoliduje s modalem)
+    acc.addEventListener('mouseenter', function () { if (window.innerWidth >= 992) open(); });
+    acc.addEventListener('mouseleave', function () { if (window.innerWidth >= 992) close(); });
+    pop.addEventListener('mouseenter', function () { if (window.innerWidth >= 992) open(); });
+    pop.addEventListener('mouseleave', function () { if (window.innerWidth >= 992) close(); });
+
+    // MOBIL: klik na ikonu účtu otevře přihlášení/registraci jako modal (místo přesměrování)
+    var closeBtn = el('button', 'jk-login-pop__close', '&times;');
+    closeBtn.setAttribute('aria-label', 'Zavřít');
+    pop.appendChild(closeBtn);
+    function openModal() { clearTimeout(timer); pop.classList.add('jk-open'); document.documentElement.classList.add('jk-login-open'); }
+    function closeModal() { pop.classList.remove('jk-open'); document.documentElement.classList.remove('jk-login-open'); }
+    closeBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); });
+    acc.addEventListener('click', function (e) {
+      if (window.innerWidth >= 992) return; // desktop = hover, klik nech projít na /customer
+      e.preventDefault(); e.stopPropagation();
+      openModal();
+    });
+    document.addEventListener('click', function (e) {
+      if (window.innerWidth >= 992 || !pop.classList.contains('jk-open')) return;
+      if (!pop.contains(e.target) && !acc.contains(e.target)) closeModal();
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
   }
 
   /* ============================================================
