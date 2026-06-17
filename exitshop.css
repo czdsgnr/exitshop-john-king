@@ -324,3 +324,14 @@ a.shopping-basket .shopping-basket-items-count {
 #owl-slideshow .slideshow-slide.item { padding: 0 !important; }
 #owl-slideshow .slideshow-slide.item img,
 #owl-slideshow .slider-link img { width: 100% !important; height: auto !important; display: block; border-radius: inherit; }
+
+/* ------------------------------------------------------------
+   11) HOMEPAGE – dvojbanner pod USP (obrázky 686×241)
+   Desktop: vedle sebe; mobil (<768px): pod sebe. Mezera mezi nimi.
+   HTML <section class="jk-banner-duo"> vkládá uživatel do obsahu homepage.
+   ------------------------------------------------------------ */
+.jk-banner-duo { display: flex; gap: 20px; max-width: 1320px; margin: 24px auto; padding: 0 12px; box-sizing: border-box; }
+.jk-banner-duo__item { flex: 1 1 0; min-width: 0; display: block; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,.05); transition: transform .2s ease, box-shadow .2s ease; }
+.jk-banner-duo__item:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.10); }
+.jk-banner-duo__item img { width: 100%; height: auto; display: block; aspect-ratio: 686 / 241; object-fit: cover; }
+@media (max-width: 768px) { .jk-banner-duo { flex-direction: column; gap: 14px; margin: 16px auto; } }
