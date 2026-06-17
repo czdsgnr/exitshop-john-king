@@ -321,6 +321,7 @@
         používá nativní třídy add-to-cart-js, ověřit že reálně přidá do košíku)
      ============================================================ */
   function buildItemboxExtras() {
+    var added = 0;
     Array.prototype.forEach.call(document.querySelectorAll('.itembox-item'), function (item) {
       if (item.querySelector('.jk-ib-bottom')) return;
       var nameA = item.querySelector('a.product_name');
@@ -349,7 +350,12 @@
       footer.appendChild(btn);
       bottom.appendChild(footer);
       item.appendChild(bottom);
+      added++;
     });
+    // nabindovat naše tlačítka na nativní košík (Exitshop váže při loadu, dynamicky vložená musíme přivázat ručně)
+    if (added && typeof window.attach_add_to_cart_js === 'function') {
+      try { window.attach_add_to_cart_js(); } catch (e) { console.warn('[JK] attachCart', e); }
+    }
   }
 
   ready(function () {
