@@ -235,7 +235,7 @@ a.shopping-basket .shopping-basket-items-count {
 @media (max-width: 991.98px) {
   /* JEDNODUCHÝ GRID: nic na mobilu nepřeteče do strany (hlavička není na mobilu sticky) */
   html, body { overflow-x: hidden !important; max-width: 100% !important; }
-  header .header-middle { padding: 12px 14px 14px !important; box-sizing: border-box; max-width: 100%; }
+  header .header-middle { padding-left: 0 !important; padding-right: 0 !important; max-width: 100%; }
 
   /* === MOBILNÍ HLAVIČKA: burger | logo ........ účet | košík ; search dole === */
   .header-cms-icon { display: none !important; }              /* info ikonu pryč */
