@@ -137,7 +137,8 @@ a.shopping-basket .shopping-basket-items-count {
 @media (min-width: 992px) {
   .jk-sticky #top-menu { box-shadow: 0 6px 20px rgba(0,0,0,.08); }
   .jk-sticky #top-menu nav.navbar { min-height: 64px; gap: 18px; align-items: center; }
-  .jk-sticky #top-menu .jk-allcats { display: none !important; }
+  /* „Všechny kategorie" pilulka zůstává i ve sticky → přístup ke VŠEM kategoriím */
+  .jk-sticky #top-menu .jk-allcats { display: flex !important; align-items: center; flex: 0 0 auto; }
 
   .jk-sticky .jk-stick-logo { display: inline-flex; align-items: center; flex: 0 0 auto; }
   .jk-sticky .jk-stick-logo img { height: 34px; width: auto; display: block; }
@@ -325,6 +326,27 @@ a.shopping-basket .shopping-basket-items-count {
 #owl-slideshow .slideshow-slide.item img,
 #owl-slideshow .slider-link img { width: 100% !important; height: auto !important; display: block; border-radius: inherit; }
 
+/* karusel: skrýt tečky, ukázat šipky ‹ › na bocích (na hover) */
+#owl-slideshow { position: relative; }
+#owl-slideshow .owl-dots { display: none !important; }
+#owl-slideshow .owl-nav { display: block !important; }
+#owl-slideshow .owl-nav button.owl-prev,
+#owl-slideshow .owl-nav button.owl-next {
+  position: absolute; top: 50%; transform: translateY(-50%); margin: 0; padding: 0;
+  width: 46px; height: 46px; border-radius: 50%; background: #fff !important; border: 0;
+  box-shadow: 0 3px 12px rgba(0,0,0,.18); display: flex; align-items: center; justify-content: center;
+  z-index: 6; opacity: 0; transition: opacity .2s ease, background .15s ease; color: var(--jk-black); cursor: pointer;
+}
+#owl-slideshow:hover .owl-nav button { opacity: 1; }
+#owl-slideshow .owl-nav button.owl-prev { left: 14px; }
+#owl-slideshow .owl-nav button.owl-next { right: 14px; }
+#owl-slideshow .owl-nav button span { display: none !important; }
+#owl-slideshow .owl-nav button.owl-prev::before,
+#owl-slideshow .owl-nav button.owl-next::before { content: ""; width: 11px; height: 11px; border-top: 2.5px solid currentColor; border-right: 2.5px solid currentColor; }
+#owl-slideshow .owl-nav button.owl-prev::before { transform: rotate(-135deg); margin-left: 4px; }
+#owl-slideshow .owl-nav button.owl-next::before { transform: rotate(45deg); margin-right: 4px; }
+#owl-slideshow .owl-nav button:hover { background: var(--jk-black) !important; color: #fff; }
+
 /* ------------------------------------------------------------
    11) HOMEPAGE – dvojbanner pod USP (obrázky 686×241)
    Desktop: vedle sebe; mobil (<768px): pod sebe. Mezera mezi nimi.
@@ -388,3 +410,23 @@ a.shopping-basket .shopping-basket-items-count {
 
 /* tlačítko do košíku – kruh */
 .products .product .product-add-to-shopping-basket { width: 46px; height: 46px; border-radius: 50% !important; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
+
+/* ------------------------------------------------------------
+   14) HOMEPAGE itembox karty (nejprodávanější / novinky / také nakoupili)
+   sjednocení + odznaky do rohů: Novinka vlevo nahoře, sleva vpravo nahoře.
+   (Pozn.: itembox šablona nemá data skladem/košík – viz README/poznámka.)
+   ------------------------------------------------------------ */
+.itembox-item {
+  position: relative !important; overflow: visible !important; display: flex; flex-direction: column; height: 100%; box-sizing: border-box;
+  background: #fff !important; border: 1px solid var(--jk-line) !important; border-radius: 16px !important; padding: 12px !important; box-shadow: none !important;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.itembox-item:hover { box-shadow: 0 8px 24px rgba(0,0,0,.10) !important; transform: translateY(-3px); }
+.itembox-item > a:not(.product_name) { display: block; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 12px; margin-bottom: 10px; }
+.itembox-item > a:not(.product_name) img { width: 100% !important; height: 100% !important; object-fit: contain !important; display: block; }
+.itembox-item .product_name { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; line-height: 1.3; font-size: 14px; font-weight: 600; color: var(--jk-black) !important; text-decoration: none; margin: 0 0 8px; }
+.itembox-item .cena { margin-top: auto; }
+.itembox-item .itembox-price { font-size: 18px; font-weight: 700; color: var(--jk-black); }
+.itembox-item .itembox-strips { position: static !important; height: 0 !important; margin: 0 !important; padding: 0 !important; }
+.itembox-item .itembox-strips .new-product-strip { position: absolute !important; top: 8px !important; left: 8px !important; right: auto !important; bottom: auto !important; z-index: 4 !important; margin: 0 !important; }
+.itembox-item .itembox-strips .discount-strip { position: absolute !important; top: 8px !important; right: 8px !important; left: auto !important; bottom: auto !important; z-index: 4 !important; margin: 0 !important; }
