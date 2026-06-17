@@ -479,7 +479,7 @@ a.shopping-basket .shopping-basket-items-count {
    ------------------------------------------------------------ */
 /* POZOR: fancybox centruje obsah přes inline-block + vertical-align – NESMÍ být display:block
    (jinak modal spadne pod viewport a „zmizí"). Proto inline-block. */
-.added_to_cart_popup { display: inline-block !important; padding: 20px 28px 24px !important; box-sizing: border-box; }
+.added_to_cart_popup { display: inline-block !important; min-width: 0 !important; max-width: min(1100px, 94vw) !important; padding: 20px 28px 24px !important; box-sizing: border-box; }
 .added_to_cart_popup hr { border: 0 !important; border-top: 1px solid var(--jk-line) !important; margin: 18px 0 !important; opacity: 1 !important; }
 
 /* nadpis se zeleným ✓ */
