@@ -110,9 +110,11 @@ a.shopping-basket .shopping-basket-items-count {
   #top-menu #navbarSupportedContent { overflow: hidden !important; min-width: 0 !important; }
 }
 
+/* theme dává li.nav-item padding 11px 9px → to dělalo velké mezery mezi kategoriemi. Pryč s ním. */
+#top-menu ul.navbar-nav > li.yamm-fw { padding-left: 0 !important; padding-right: 0 !important; }
 #top-menu .nav-item .nav-link {
   color: var(--jk-black) !important; font-weight: 600 !important; font-size: 14.5px !important;
-  padding: 10px 6px !important; margin: 0; border-radius: 10px; position: relative; white-space: nowrap;
+  padding: 10px 12px !important; margin: 0; border-radius: 10px; position: relative; white-space: nowrap;
   transition: background-color .15s ease, color .15s ease;
 }
 /* hover / aktivní = jemné růžové podbarvení textu (žádný box ani dropdown) */
