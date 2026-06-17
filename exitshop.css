@@ -391,39 +391,53 @@ a.shopping-basket .shopping-basket-items-count {
 .products .product { display: flex !important; }
 .products .product .product-border {
   display: flex; flex-direction: column; width: 100%; height: 100%; position: relative; box-sizing: border-box;
-  padding: 12px; background: #fff; border: 1px solid var(--jk-line); border-radius: 16px;
+  padding: 0; background: #fff; border: 1px solid var(--jk-line); border-radius: 16px; overflow: hidden;
   transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
 }
-.products .product .product-border:hover { border-color: transparent; box-shadow: 0 8px 24px rgba(0,0,0,.10) !important; transform: translateY(-3px); }
+.products .product .product-border:hover { box-shadow: 0 8px 24px rgba(0,0,0,.10) !important; transform: translateY(-3px); }
 
-/* obrázek – čtvercová plocha, produkt vystředěný */
-.products .product .product-border > figure { margin: 0 0 12px; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 12px; background: #fff; position: relative; display: block; }
-.products .product .product-border > figure > img { width: 100% !important; height: 100% !important; object-fit: contain !important; display: block; }
-.products .product .img_description_layer { position: absolute; inset: 0; height: 100%; }
-.products .product .img_description_layer img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+/* obrázek – čtvercová plocha, produkt VYSTŘEDĚNÝ DOPROSTŘED + dělící linka dole (jako návrh) */
+.products .product .product-border > figure { margin: 0; aspect-ratio: 1 / 1; overflow: hidden; background: #fff; position: relative; display: flex; align-items: center; justify-content: center; padding: 16px; border-bottom: 1px solid var(--jk-line); }
+.products .product .product-border > figure > img { max-width: 100% !important; max-height: 100% !important; width: auto !important; height: auto !important; object-fit: contain !important; display: block; margin: auto; }
+.products .product .img_description_layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; background: #fff; margin: 0; }
+.products .product .img_description_layer img { max-width: 100% !important; max-height: 100% !important; width: auto !important; height: auto !important; object-fit: contain !important; }
 
 /* odznaky (Novinka/sleva) jako overlay v rohu → nehýbou s nadpisem */
-.products .product .product-stripes.flags { position: absolute; top: 10px; left: 10px; z-index: 3; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+.products .product .product-stripes.flags { position: absolute; top: 12px; left: 12px; z-index: 3; margin: 0; display: flex; flex-direction: column; gap: 5px; }
 
-/* textový obsah = flex sloupec */
-.products .product .product-text-content { display: flex; flex-direction: column; flex: 1 1 auto; padding: 0; }
+/* textový obsah = flex sloupec s paddingem */
+.products .product .product-text-content { display: flex; flex-direction: column; flex: 1 1 auto; padding: 14px 16px 16px; }
 .products .product .product-text-content .product-content { margin: 0; }
 
 /* nadpis – fixně 2 řádky */
-.products .product .product-content h2 { font-size: 15px; line-height: 1.3; font-weight: 600; color: var(--jk-black); margin: 0 0 6px; min-height: calc(1.3em * 2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.products .product .product-content h2 { font-size: 15px; line-height: 1.3; font-weight: 700; color: var(--jk-black); margin: 0 0 6px; min-height: calc(1.3em * 2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* popisek – fixně 2 řádky, tlumený */
 .products .product .product-content.desc { font-size: 13px; line-height: 1.4; color: var(--jk-muted); margin: 0 0 10px; min-height: calc(1.4em * 2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* skladem */
-.products .product .stored-count { margin: 0 0 10px; font-size: 13px; }
+/* skladem zeleně */
+.products .product .stored-count { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: #1aa251; }
+.products .product .stored-count .format-product-quantity { font-weight: 700; }
 
-/* footer (cena + tlačítko) přilepený dolů, zarovnaný */
-.products .product .product-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.products .product .product-price-our { font-size: 19px; font-weight: 700; color: var(--jk-black); }
+/* footer = cena NAD tlačítkem, tlačítko přes celou šířku */
+.products .product .product-footer { margin-top: auto; display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+.products .product .product-price { display: flex; align-items: baseline; flex-wrap: wrap; }
+.products .product .product-price-our { font-size: 20px; font-weight: 800; color: var(--jk-black); }
+.products .product .discount-old-price-placeholder { display: none !important; }
+.products .product .discount-old-price:not(.discount-old-price-placeholder) { text-decoration: line-through; color: var(--jk-muted); font-size: 14px; margin-right: 6px; }
+.products .product .add-to-cart-group { width: 100%; }
 
-/* tlačítko do košíku – kruh */
-.products .product .product-add-to-shopping-basket { width: 46px; height: 46px; border-radius: 50% !important; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
+/* VELKÉ zelené tlačítko přes celou šířku (jako itembox) – „Do košíku" / „Zobrazit varianty" */
+.products .product .product-add-to-shopping-basket {
+  width: 100%; min-height: 44px; border-radius: 12px !important; background: #a1c900 !important; color: #fff !important;
+  display: flex !important; align-items: center; justify-content: center; gap: 8px; padding: 11px 16px !important;
+  font-size: 15px; font-weight: 700; line-height: 1; cursor: pointer; border: 0 !important; box-shadow: none !important; transition: background .15s ease;
+}
+.products .product .product-add-to-shopping-basket:hover { background: #69920f !important; }
+/* nativní ikona košíku → bílá + malá; doplnit text „Do košíku" */
+.products .product .cart-btn-image { width: 18px !important; height: 18px !important; min-width: 18px; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; filter: brightness(0) invert(1); flex: 0 0 auto; }
+.products .product .add-to-cart-js-without-child::after { content: "Do košíku"; background: none !important; width: auto !important; height: auto !important; color: #fff; font-weight: 700; }
+.products .product .show_variant_button { color: #fff !important; font-weight: 700; }
 
 /* ------------------------------------------------------------
    14) HOMEPAGE itembox karty (nejprodávanější / novinky / také nakoupili)
