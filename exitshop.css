@@ -104,14 +104,12 @@ a.shopping-basket .shopping-basket-items-count {
 
 #top-menu .nav-item .nav-link {
   color: var(--jk-black) !important; font-weight: 600 !important; font-size: 14.5px !important;
-  padding: 17px 11px !important; position: relative; white-space: nowrap;
+  padding: 10px 14px !important; margin: 0 1px; border-radius: 10px; position: relative; white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease;
 }
-#top-menu .nav-item .nav-link::after {
-  content: ''; position: absolute; left: 11px; right: 11px; bottom: 11px; height: 2px; background: var(--jk-pink);
-  border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .18s ease;
-}
-#top-menu .nav-item:hover .nav-link::after,
-#top-menu .nav-item.active .nav-link::after { transform: scaleX(1); }
+/* hover / aktivní = jemné růžové podbarvení textu (žádný box ani dropdown) */
+#top-menu .nav-item:hover .nav-link,
+#top-menu .nav-item.active .nav-link { background: var(--jk-pink-soft) !important; color: var(--jk-pink) !important; }
 
 /* --- pilulka „Všechny kategorie" (injektuje exitshop.js na začátek nav) --- */
 .jk-allcats { margin-right: 8px !important; flex: 0 0 auto; }

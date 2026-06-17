@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.5.1';
+  JK.version = '0.5.2';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -122,6 +122,13 @@
 
     var panel = el('div', 'jk-allmenu jk-injected', '<div class="jk-allmenu__grid">' + gridHTML + '</div>' + chipsHTML);
     container.appendChild(panel);
+
+    // na DESKTOPU odstraň nativní per-kategorie dropdowny úplně (data už máme v panelu) –
+    // žádný prázdný box ani probliknutí na hover. Na mobilu je necháváme (accordion).
+    if (window.innerWidth >= 992) {
+      document.querySelectorAll('#top-menu ul.navbar-nav > li.yamm-fw .yamm-dropdown-menu, #navbar-mismatched-items .yamm-dropdown-menu')
+        .forEach(function (d) { d.remove(); });
+    }
 
     // řízený hover (otevři okamžitě, zavři s malou prodlevou – žádné blikání)
     var timer;
