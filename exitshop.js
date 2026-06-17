@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.2.0';
+  JK.version = '0.3.0';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -81,8 +81,51 @@
   }
 
   /* ============================================================
-     D) Sticky – po scrollu přidej .jk-sticky na <html>
-        (kondenzovaná verze se dolaďuje v CSS – další iterace)
+     D) Sticky lišta – logo (vlevo) + akce (vpravo) do #top-menu,
+        viditelné jen ve stavu .jk-sticky (viz CSS sekce 6)
+     ============================================================ */
+  var SVG = {
+    search: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>',
+    user: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+    bag: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'
+  };
+  function attr(sel, name, fallback) { var e = document.querySelector(sel); return e ? (e.getAttribute(name) || fallback) : fallback; }
+  function buildStickyBar() {
+    var nav = document.querySelector('#top-menu nav.navbar');
+    var collapse = document.querySelector('#navbarSupportedContent');
+    if (!nav || !collapse || document.querySelector('.jk-stick-logo')) return;
+
+    // logo vlevo
+    var logoSrc = attr('a#logo img', 'src', '');
+    var L = el('a', 'jk-stick-logo jk-injected', '<img src="' + logoSrc + '" alt="John King">');
+    L.href = attr('a#logo', 'href', '#');
+    nav.insertBefore(L, collapse);
+
+    // akce vpravo
+    var count = (document.querySelector('.shopping-basket-items-count') || {}).textContent || '0';
+    var A = el('div', 'jk-stick-actions jk-injected',
+      '<button type="button" class="jk-stick-search" aria-label="Hledat">' + SVG.search + '</button>' +
+      '<a class="jk-stick-acct" href="' + attr('a.customer-button', 'href', '#') + '" aria-label="Účet">' + SVG.user + '</a>' +
+      '<a class="jk-stick-cart" href="' + attr('a.shopping-basket', 'href', '#') + '">' + SVG.bag +
+      '<span class="jk-stick-cart__c">' + count + '</span></a>');
+    nav.appendChild(A);
+
+    // search → scroll nahoru + focus fulltextu
+    A.querySelector('.jk-stick-search').addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(function () { var i = document.querySelector('#searchInput'); if (i) i.focus(); }, 450);
+    });
+    // sync počtu v košíku
+    var src = document.querySelector('.shopping-basket-items-count');
+    if (src && window.MutationObserver) {
+      new MutationObserver(function () {
+        var c = A.querySelector('.jk-stick-cart__c'); if (c) c.textContent = src.textContent;
+      }).observe(src, { childList: true, characterData: true, subtree: true });
+    }
+  }
+
+  /* ============================================================
+     E) Sticky toggle – po scrollu přidej .jk-sticky na <html>
      ============================================================ */
   function initSticky() {
     var THRESHOLD = 120;
@@ -104,6 +147,7 @@
     try { buildUSP(); } catch (e) { console.warn('[JK] USP', e); }
     try { buildCartPill(); } catch (e) { console.warn('[JK] cart', e); }
     try { buildAllCats(); } catch (e) { console.warn('[JK] allcats', e); }
+    try { buildStickyBar(); } catch (e) { console.warn('[JK] stickybar', e); }
     initSticky();
     console.log('[JK] exitshop.js loaded v' + JK.version);
   });

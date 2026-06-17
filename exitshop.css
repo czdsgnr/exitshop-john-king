@@ -125,9 +125,42 @@ a.shopping-basket .shopping-basket-items-count {
 .jk-allcats__chev { font-size: 11px; opacity: .85; }
 
 /* ------------------------------------------------------------
-   6) STICKY / KONDENZOVANÁ VERZE — TODO (další iterace)
-   #top-menu je nativně sticky; přidáme kondenzaci na 1 řadu (64px).
+   6) STICKY / KONDENZOVANÁ VERZE
+   #top-menu se po scrollu mění na position:fixed (nativní theme sticky).
+   exitshop.js přidá .jk-sticky na <html> (scroll > 120px) a injektuje
+   do lišty logo (vlevo) + akce (vpravo: search/účet/košík).
    ------------------------------------------------------------ */
+.jk-stick-logo, .jk-stick-actions { display: none; }
+
+@media (min-width: 992px) {
+  .jk-sticky #top-menu { box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+  .jk-sticky #top-menu nav.navbar { min-height: 64px; gap: 18px; align-items: center; }
+  .jk-sticky #top-menu .jk-allcats { display: none !important; }
+
+  .jk-sticky .jk-stick-logo { display: inline-flex; align-items: center; flex: 0 0 auto; }
+  .jk-sticky .jk-stick-logo img { height: 34px; width: auto; display: block; }
+
+  .jk-sticky #top-menu #navbarSupportedContent { flex: 1 1 auto; overflow: hidden; }
+  .jk-sticky #top-menu .navbar-nav { flex-wrap: nowrap !important; gap: 0 !important; }
+  .jk-sticky #top-menu .nav-item .nav-link { padding: 20px 10px !important; font-size: 14px !important; }
+  .jk-sticky #top-menu .nav-item .nav-link::after { bottom: 14px; }
+
+  .jk-sticky .jk-stick-actions { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+  .jk-stick-search, .jk-stick-acct {
+    width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: none; border: 0; color: var(--jk-black); cursor: pointer; padding: 0;
+  }
+  .jk-stick-search:hover, .jk-stick-acct:hover { background: var(--jk-pink-soft); color: var(--jk-pink); }
+  .jk-stick-cart {
+    display: inline-flex; align-items: center; gap: 7px; background: var(--jk-black); color: #fff !important;
+    border-radius: var(--jk-radius-pill); padding: 8px 14px; text-decoration: none !important; font-weight: 600; font-size: 14px;
+  }
+  .jk-stick-cart:hover { filter: brightness(1.15); }
+  .jk-stick-cart__c {
+    background: var(--jk-pink); color: #fff; border-radius: var(--jk-radius-pill); min-width: 20px; height: 20px; padding: 0 5px;
+    font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;
+  }
+}
 
 /* ------------------------------------------------------------
    7) MEGA MENU (Yamm dropdown) — TODO (další iterace)
