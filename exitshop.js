@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.5';
+  JK.version = '0.6.6';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -323,9 +323,6 @@
   function buildItemboxExtras() {
     var added = 0;
     Array.prototype.forEach.call(document.querySelectorAll('.itembox-item'), function (item) {
-      // upsell karty UVNITŘ modalu (fancybox) nezpracovávat – manipulace + attach_add_to_cart_js
-      // jinak fancybox zavře hned po otevření („modal zmizí")
-      if (item.closest('.fancybox-content')) return;
       if (item.querySelector('.jk-ib-bottom')) return;
       var nameA = item.querySelector('a.product_name');
       var imgA = item.querySelector('a.fancybox_detail_pointer:not(.product_name)') || item.querySelector('a[href*="/p/"]');
