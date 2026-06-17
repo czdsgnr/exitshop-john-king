@@ -340,3 +340,45 @@ a.shopping-basket .shopping-basket-items-count {
    12) USP karty (benefity na HP) – bez stínu, jen jemný border
    ------------------------------------------------------------ */
 .usp-card { box-shadow: none !important; border: 1px solid var(--jk-line) !important; }
+
+/* ------------------------------------------------------------
+   13) PRODUKTOVÉ KARTY (výpis v kategorii) – sjednocení + modernizace
+   stejná plocha obrázku, nadpis/popisek na fixní 2 řádky, footer
+   (cena + tlačítko) přilepený dolů → vše zarovnané napříč kartami.
+   ------------------------------------------------------------ */
+.products .product { display: flex !important; }
+.products .product .product-border {
+  display: flex; flex-direction: column; width: 100%; height: 100%; position: relative; box-sizing: border-box;
+  padding: 12px; background: #fff; border: 1px solid var(--jk-line); border-radius: 16px;
+  transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+}
+.products .product .product-border:hover { border-color: transparent; box-shadow: 0 8px 24px rgba(0,0,0,.10) !important; transform: translateY(-3px); }
+
+/* obrázek – čtvercová plocha, produkt vystředěný */
+.products .product .product-border > figure { margin: 0 0 12px; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 12px; background: #fff; position: relative; display: block; }
+.products .product .product-border > figure > img { width: 100% !important; height: 100% !important; object-fit: contain !important; display: block; }
+.products .product .img_description_layer { position: absolute; inset: 0; height: 100%; }
+.products .product .img_description_layer img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+
+/* odznaky (Novinka/sleva) jako overlay v rohu → nehýbou s nadpisem */
+.products .product .product-stripes.flags { position: absolute; top: 10px; left: 10px; z-index: 3; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+
+/* textový obsah = flex sloupec */
+.products .product .product-text-content { display: flex; flex-direction: column; flex: 1 1 auto; padding: 0; }
+.products .product .product-text-content .product-content { margin: 0; }
+
+/* nadpis – fixně 2 řádky */
+.products .product .product-content h2 { font-size: 15px; line-height: 1.3; font-weight: 600; color: var(--jk-black); margin: 0 0 6px; min-height: calc(1.3em * 2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* popisek – fixně 2 řádky, tlumený */
+.products .product .product-content.desc { font-size: 13px; line-height: 1.4; color: var(--jk-muted); margin: 0 0 10px; min-height: calc(1.4em * 2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* skladem */
+.products .product .stored-count { margin: 0 0 10px; font-size: 13px; }
+
+/* footer (cena + tlačítko) přilepený dolů, zarovnaný */
+.products .product .product-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.products .product .product-price-our { font-size: 19px; font-weight: 700; color: var(--jk-black); }
+
+/* tlačítko do košíku – kruh */
+.products .product .product-add-to-shopping-basket { width: 46px; height: 46px; border-radius: 50% !important; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
