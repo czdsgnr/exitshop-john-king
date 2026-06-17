@@ -2,76 +2,133 @@
    John King — Exitshop custom styles
    Repo: czdsgnr/exitshop-john-king  →  GitHub Pages
    Načítá se přes dev-loader (viz README) na všech stránkách.
+   Šablona = Bootstrap + Yamm mega menu.
    ============================================================ */
 
 /* ------------------------------------------------------------
    1) DESIGN TOKENS
    ------------------------------------------------------------ */
 :root {
-  /* barvy */
   --jk-black:        #0E0E0E;   /* pilulky, USP lišta, text */
   --jk-pink:         #EC1C8C;   /* akcent – tečky, badge, podtržení */
   --jk-pink-soft:    #FCE4F1;   /* světlé růžové pozadí (hover) */
-  --jk-cream:        #F1ECE4;   /* teplé pozadí stránky (volitelné) */
+  --jk-cream:        #F1ECE4;   /* teplé pozadí (volitelné) */
   --jk-search-bg:    #EFEAE3;   /* pozadí fulltext pole */
   --jk-text:         #0E0E0E;
-  --jk-muted:        #8A8A8A;   /* placeholder / sekundární text */
-  --jk-line:         #E6E1D8;   /* jemné linky / oddělovače */
+  --jk-muted:        #8A8A8A;   /* placeholder / sekundární */
+  --jk-line:         #E8E3DA;   /* jemné linky */
   --jk-white:        #FFFFFF;
 
-  /* tvar */
   --jk-radius-pill:  999px;
-  --jk-radius-lg:    18px;
-  --jk-radius-md:    12px;
-
-  /* rozměry headeru (dle návrhu) */
-  --jk-header-h:     104px;     /* hlavní řada (logo+search+košík) */
-  --jk-usp-h:        44px;      /* USP lišta */
-  --jk-nav-h:        56px;      /* lišta s kategoriemi */
-  --jk-sticky-h:     64px;      /* kondenzovaná sticky verze */
-
-  /* typografie */
-  --jk-font: 'Fira Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* ------------------------------------------------------------
-   2) USP / NOTIFICATION BAR
-   Exitshop má #notification-bar (dnes růžové pozadí #eb5c94).
-   Návrh: černé pozadí, bílý text, růžové tečky mezi položkami.
-   Marquee (posun) a markup řeší exitshop.js – tady jen vzhled.
+   2) ÚKLID – co návrh nepoužívá
    ------------------------------------------------------------ */
-#notification-bar {
-  background-color: var(--jk-black) !important;
-  color: var(--jk-white) !important;
-  border: 0 !important;
+header > nav.main-nav { display: none !important; }   /* starý utility řádek */
+.content-under-header { display: none !important; }   /* prázdný sloupec mezi logem a searchem */
+
+/* ------------------------------------------------------------
+   3) USP MARQUEE (injektuje exitshop.js na začátek <header>)
+   ------------------------------------------------------------ */
+.jk-usp { background: var(--jk-black); color: #fff; overflow: hidden; height: 44px; display: flex; align-items: center; }
+.jk-usp__track { display: flex; align-items: center; white-space: nowrap; animation: jk-marquee 38s linear infinite; will-change: transform; }
+.jk-usp:hover .jk-usp__track { animation-play-state: paused; }
+.jk-usp__item { display: inline-flex; align-items: center; gap: 9px; padding: 0 30px; position: relative; font-size: 13px; font-weight: 500; color: #fff; letter-spacing: .01em; }
+.jk-usp__item::after { content: ''; position: absolute; right: -4px; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--jk-pink); transform: translateY(-50%); }
+.jk-usp__ico { font-size: 15px; }
+@keyframes jk-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ------------------------------------------------------------
+   4) HLAVNÍ ŘÁDEK (logo | search | účet | košík)
+   ------------------------------------------------------------ */
+header .header-middle { padding: 14px 0; }
+a#logo img { height: 46px !important; width: auto !important; }
+
+@media (min-width: 992px) {
+  header .header-middle .row.menu-gutters { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 28px; }
+  header .header-middle .logotype { flex: 0 0 auto !important; max-width: none !important; width: auto !important; }
+  header .header-middle .search-div { flex: 1 1 auto !important; max-width: none !important; margin: 0 !important; order: 0 !important; }
+  header .header-middle .header-shop-basket-button { flex: 0 0 auto !important; max-width: none !important; width: auto !important; display: flex; align-items: center; gap: 14px; justify-content: flex-end; }
 }
-#notification-bar a,
-#notification-bar span,
-#notification-bar p {
-  color: var(--jk-white) !important;
+
+/* --- search pilulka --- */
+.search.classic-search .w-100.position-relative { width: 100% !important; }
+.search.classic-search #searchInput {
+  height: 50px !important; border: 1px solid var(--jk-line) !important; background: var(--jk-search-bg) !important;
+  border-radius: var(--jk-radius-pill) !important; padding: 0 20px 0 48px !important; font-size: 15px; box-shadow: none !important;
+}
+.search.classic-search #searchInput::placeholder { color: var(--jk-muted); }
+.search.classic-search button.btn {
+  position: absolute !important; left: 8px !important; right: auto !important; top: 50% !important; transform: translateY(-50%) !important;
+  padding: 6px 8px !important; color: var(--jk-muted) !important; background: none !important; border: 0 !important; box-shadow: none !important;
+}
+.search.classic-search button.btn:hover { color: var(--jk-black) !important; }
+
+/* --- účet (ikona) --- */
+a.customer-button {
+  width: 46px; height: 46px; border-radius: 50%; display: inline-flex !important; align-items: center; justify-content: center;
+  color: var(--jk-black) !important; border: 1px solid transparent;
+}
+a.customer-button:hover { background: var(--jk-pink-soft); }
+a.customer-button::before {
+  content: ''; width: 22px; height: 22px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='4'/><path d='M4 21a8 8 0 0 1 16 0'/></svg>") center/contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='4'/><path d='M4 21a8 8 0 0 1 16 0'/></svg>") center/contain no-repeat;
 }
 
-/* ------------------------------------------------------------
-   3) HLAVIČKA — placeholder
-   Přesné selektory doplníme po inspekci živého DOMu shopu.
-   Cílový vzhled:
-   - logo vlevo, uprostřed fulltext (kulaté, světle béžové),
-     vpravo ikony účet + oblíbené (srdce s počtem) + košík (černá pilulka)
-   - pod tím lišta kategorií: pilulka „Všechny kategorie" + textové odkazy,
-     aktivní položka podtržená růžově
-   ------------------------------------------------------------ */
-/* TODO(header): restyle loga, fulltextu, košíku a lišty kategorií
-   až podle reálné struktury (.header, .navbar, .cart, .search …) */
+/* --- košík (černá pilulka) --- */
+a.shopping-basket {
+  background: var(--jk-black) !important; color: #fff !important; border-radius: var(--jk-radius-pill) !important;
+  padding: 11px 18px !important; display: inline-flex !important; align-items: center; gap: 10px; text-decoration: none !important; height: auto !important;
+}
+a.shopping-basket:hover { filter: brightness(1.15); }
+a.shopping-basket .bi-handbag { color: #fff !important; font-size: 18px; }
+.jk-cart__label { font-weight: 600; font-size: 15px; color: #fff; }
+a.shopping-basket .shopping-basket-items-count {
+  background: var(--jk-pink) !important; color: #fff !important; border-radius: var(--jk-radius-pill) !important;
+  min-width: 22px; height: 22px; padding: 0 6px; font-size: 12px; font-weight: 700; display: inline-flex !important;
+  align-items: center; justify-content: center; position: static !important;
+}
+.jk-cart__total { font-weight: 600; font-size: 15px; color: #fff; padding-left: 2px; }
 
 /* ------------------------------------------------------------
-   4) STICKY / KONDENZOVANÁ VERZE — placeholder
-   Po scrollu: jen 1 řada (logo + nav + ikony + košík pill, výška 64px).
-   exitshop.js přidá .jk-sticky na header při scrollu.
+   5) LIŠTA KATEGORIÍ (#top-menu) – bílá, černé odkazy, růžové podtržení
    ------------------------------------------------------------ */
-/* TODO(sticky): .jk-sticky header { height: var(--jk-sticky-h); … } */
+#top-menu { background: var(--jk-white) !important; border-top: 1px solid var(--jk-line); border-bottom: 1px solid var(--jk-line); }
+#top-menu nav.navbar { align-items: center !important; min-height: 56px; padding-top: 0; padding-bottom: 0; }
+#top-menu .navbar-collapse { align-items: center !important; flex-wrap: nowrap !important; }
+#top-menu .navbar-nav { align-items: center; flex-wrap: nowrap !important; gap: 2px !important; width: 100%; }
+@media (min-width: 992px) { #top-menu .navbar-collapse { justify-content: flex-start !important; } }
+
+#top-menu .nav-item .nav-link {
+  color: var(--jk-black) !important; font-weight: 600 !important; font-size: 14.5px !important;
+  padding: 17px 11px !important; position: relative; white-space: nowrap;
+}
+#top-menu .nav-item .nav-link::after {
+  content: ''; position: absolute; left: 11px; right: 11px; bottom: 11px; height: 2px; background: var(--jk-pink);
+  border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .18s ease;
+}
+#top-menu .nav-item:hover .nav-link::after,
+#top-menu .nav-item.active .nav-link::after { transform: scaleX(1); }
+
+/* --- pilulka „Všechny kategorie" (injektuje exitshop.js na začátek nav) --- */
+.jk-allcats { margin-right: 8px !important; flex: 0 0 auto; }
+.jk-allcats__btn {
+  display: inline-flex !important; align-items: center; gap: 9px; background: var(--jk-black); color: #fff !important;
+  border-radius: var(--jk-radius-pill); padding: 10px 16px !important; font-weight: 600; font-size: 15px; text-decoration: none !important; white-space: nowrap;
+}
+.jk-allcats__btn:hover { filter: brightness(1.15); color: #fff !important; }
+.jk-allcats__btn::after { display: none !important; }
+.jk-allcats__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 15px; height: 15px; }
+.jk-allcats__grid i { background: #fff; border-radius: 2px; }
+.jk-allcats__chev { font-size: 11px; opacity: .85; }
 
 /* ------------------------------------------------------------
-   5) MEGA MENU — placeholder
-   Rozbalená kategorie pod lištou.
+   6) STICKY / KONDENZOVANÁ VERZE — TODO (další iterace)
+   #top-menu je nativně sticky; přidáme kondenzaci na 1 řadu (64px).
    ------------------------------------------------------------ */
-/* TODO(megamenu) */
+
+/* ------------------------------------------------------------
+   7) MEGA MENU (Yamm dropdown) — TODO (další iterace)
+   ------------------------------------------------------------ */
