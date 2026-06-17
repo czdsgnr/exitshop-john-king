@@ -169,8 +169,11 @@ a.shopping-basket .shopping-basket-items-count {
    (li.yamm-fw) i s podkategoriemi a postaví jeden panel .jk-allmenu.
    Nativní per-kategorie dropdowny vypínáme (řešilo „divné hovery").
    ------------------------------------------------------------ */
-#top-menu ul.navbar-nav > li.yamm-fw .yamm-dropdown-menu,
-#navbar-mismatched-items .yamm-dropdown-menu { display: none !important; }
+/* jen DESKTOP – na mobilu nativní accordion v hamburgeru musí fungovat */
+@media (min-width: 992px) {
+  #top-menu ul.navbar-nav > li.yamm-fw .yamm-dropdown-menu,
+  #navbar-mismatched-items .yamm-dropdown-menu { display: none !important; }
+}
 
 .jk-allcats { position: static !important; }
 #top-menu .container { position: relative; }
@@ -195,3 +198,25 @@ a.shopping-basket .shopping-basket-items-count {
 .jk-allmenu__chips-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--jk-muted); width: 100%; margin-bottom: 4px; }
 .jk-chip { display: inline-flex; align-items: center; padding: 8px 15px; border-radius: var(--jk-radius-pill); background: #F5F1EA; color: var(--jk-black) !important; font-weight: 600; font-size: 13px; text-decoration: none !important; border: 1px solid var(--jk-line); }
 .jk-chip:hover { background: var(--jk-pink-soft); color: var(--jk-pink) !important; border-color: transparent; }
+
+/* ------------------------------------------------------------
+   8) MOBIL (< 992px)
+   Kategorie řeší nativní hamburger (accordion). Desktop prvky
+   (pilulka „Všechny kategorie" + panel) schováme, košík zkompaktníme.
+   ------------------------------------------------------------ */
+@media (max-width: 991.98px) {
+  header .header-middle { padding: 12px 0 10px; }
+
+  /* „Všechny kategorie" pilulka + panel jsou jen pro desktop */
+  .jk-allcats { display: none !important; }
+  .jk-allmenu { display: none !important; }
+
+  /* košík kompaktně – jen ikona + počet (ať není řádek přeplácaný) */
+  a.shopping-basket { padding: 9px 11px !important; gap: 7px; }
+  a.shopping-basket .jk-cart__label,
+  a.shopping-basket .jk-cart__total { display: none !important; }
+
+  /* USP marquee o kousek nižší */
+  .jk-usp { height: 38px; }
+  .jk-usp__item { padding: 0 20px; font-size: 12px; }
+}
