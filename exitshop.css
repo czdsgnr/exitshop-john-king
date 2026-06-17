@@ -219,11 +219,14 @@ a.shopping-basket .shopping-basket-items-count {
 
   /* === MOBILNÍ HLAVIČKA: burger | logo ........ účet | košík ; search dole === */
   .header-cms-icon { display: none !important; }              /* info ikonu pryč (mimo layout) */
-  header .header-middle .row.menu-gutters { align-items: center !important; }
-  header .header-middle .navbar-toggler-top { order: -1; flex: 0 0 auto; width: auto; max-width: none; padding: 0 2px 0 0; }
-  header .header-middle .logotype { order: 0; }
-  header .header-middle .header-shop-basket-button { order: 1; margin-left: auto; display: flex; align-items: center; gap: 12px; }
-  header .header-middle .search-div { order: 5; margin-top: 16px !important; }   /* search celá šířka dole + mezera (ať nezasahuje) */
+  /* zrušit Bootstrap negativní row gutters + col padding (jinak košík přetéká vpravo ven) */
+  header .header-middle .row.menu-gutters { align-items: center !important; margin-left: 0 !important; margin-right: 0 !important; flex-wrap: wrap; }
+  header .header-middle .row.menu-gutters > [class*="col"] { padding-left: 0 !important; padding-right: 0 !important; }
+  header .header-middle .navbar-toggler-top { order: -1; flex: 0 0 auto; width: auto; max-width: none; }
+  header .header-middle .logotype { order: 0; flex: 0 1 auto; margin-left: 6px; }
+  a#logo img { height: 34px !important; max-width: 135px; }    /* menší logo na mobilu, ať se vše vejde */
+  header .header-middle .header-shop-basket-button { order: 1; margin-left: auto; flex: 0 0 auto; width: auto; max-width: none; display: flex; align-items: center; gap: 12px; }
+  header .header-middle .search-div { order: 5; flex: 0 0 100%; max-width: 100%; margin-top: 16px !important; }   /* search celá šířka dole + mezera */
 
   /* skrýt absolutní burger kategorie (lítal vpravo a přesahoval do hledání) */
   #top-menu nav.navbar > button.navbar-toggler { display: none !important; }
