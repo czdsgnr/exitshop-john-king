@@ -340,11 +340,13 @@ html.jk-mobmenu-open { overflow: hidden; }
    ------------------------------------------------------------ */
 .header-shop-customer-button { position: relative; }
 
-/* label „Můj účet" před ikonou účtu (ikona je ::before → přes flex order ji dáme až za text).
-   Na mobilu skryté – jen ikona, ať se hlavička nepřeplácá. */
-a.customer-button { gap: 8px; }
-a.customer-button::before { order: 1; }
-.jk-acc__label { order: 0; font-size: 14px; font-weight: 600; color: var(--jk-black) !important; white-space: nowrap; line-height: 1; }
+/* „Můj účet" text + vlastní SVG panáček za ním. Nativní ::before ikona pryč (po reorderu mizela).
+   Na mobilu skryjeme jen text – zůstane ikona, ať se hlavička nepřeplácá. */
+a.customer-button { display: inline-flex !important; align-items: center; gap: 8px; }
+a.customer-button::before { display: none !important; }
+.jk-acc__label { font-size: 14px; font-weight: 600; color: var(--jk-black) !important; white-space: nowrap; line-height: 1; }
+.jk-acc__ico { display: inline-flex; align-items: center; color: var(--jk-black); }
+.jk-acc__ico svg { width: 22px; height: 22px; display: block; }
 @media (max-width: 991.98px) { .jk-acc__label { display: none !important; } }
 
 .jk-login-pop {

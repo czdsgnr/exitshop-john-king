@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.7.0';
+  JK.version = '0.7.1';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -65,11 +65,13 @@
     }
   }
 
-  /* ikona účtu – label „Můj účet" před ikonu (CSS ji přes flex order dá před ::before; mobil = jen ikona) */
+  /* ikona účtu – „Můj účet" text + vlastní SVG panáček za ním (nativní ::before ikonu skryjeme v CSS;
+     mobil = jen ikona). SVG.user je definované níž, ale buildAccountLabel se volá až v ready(). */
   function buildAccountLabel() {
     var acc = document.querySelector('a.customer-button');
     if (!acc || acc.querySelector('.jk-acc__label')) return;
-    acc.appendChild(el('span', 'jk-acc__label jk-injected', 'Můj účet'));
+    acc.innerHTML = '<span class="jk-acc__label jk-injected">Můj účet</span>' +
+                    '<span class="jk-acc__ico jk-injected">' + SVG.user + '</span>';
   }
 
   /* ============================================================
