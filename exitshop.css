@@ -593,3 +593,33 @@ a.customer-button::before { display: none !important; }
   .added_to_cart_popup .pop-up-buttons { flex-wrap: wrap; }
   .added_to_cart_popup .pop-up-buttons .btn { flex: 1 1 auto; text-align: center; }
 }
+
+/* ------------------------------------------------------------
+   16) MOBILNÍ SPODNÍ LIŠTA (bottom bar) – Menu · Hledat · Košík (zvýrazněný) · Účet
+   jen <992px (injektuje exitshop.js)
+   ------------------------------------------------------------ */
+.jk-botbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 3000;
+  display: none; align-items: stretch; justify-content: space-around;
+  background: #fff; border-top: 1px solid var(--jk-line); box-shadow: 0 -3px 16px rgba(0,0,0,.08);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.jk-botbar__item {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px;
+  padding: 8px 4px 7px; background: none; border: 0; cursor: pointer; text-decoration: none !important; color: var(--jk-black); font: inherit;
+}
+.jk-botbar__item:active { opacity: .55; }
+.jk-botbar__ico { position: relative; display: inline-flex; color: var(--jk-black); }
+.jk-botbar__ico svg { width: 23px; height: 23px; display: block; }
+.jk-botbar__lbl { font-size: 10.5px; font-weight: 600; line-height: 1; color: var(--jk-black); }
+.jk-botbar__badge { position: absolute; top: -6px; right: -9px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 999px; background: var(--jk-pink); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.jk-botbar__badge[hidden] { display: none; }
+/* zvýrazněný košík – ikona ve výrazném kruhu, lehce nad lištou (FAB) */
+.jk-botbar__item--cart .jk-botbar__ico { width: 50px; height: 50px; margin-top: -20px; border-radius: 50%; background: var(--jk-black); color: #fff; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
+.jk-botbar__item--cart .jk-botbar__ico svg { width: 24px; height: 24px; }
+.jk-botbar__item--cart .jk-botbar__badge { top: -2px; right: -2px; }
+
+@media (max-width: 991.98px) {
+  .jk-botbar { display: flex; }
+  body { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+}

@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.7.1';
+  JK.version = '0.7.2';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -223,6 +223,7 @@
     // přesun do <body> (kořenový stacking kontext), jinak ho backdrop na <html> překryje
     function openModal() { clearTimeout(timer); document.body.appendChild(pop); pop.classList.add('jk-open'); document.documentElement.classList.add('jk-login-open'); }
     function closeModal() { pop.classList.remove('jk-open'); document.documentElement.classList.remove('jk-login-open'); if (window.innerWidth < 992) wrap.appendChild(pop); }
+    JK.openLogin = openModal; // pro spodní lištu (bottom bar)
     closeBtn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); });
     acc.addEventListener('click', function (e) {
       if (window.innerWidth >= 992) return; // desktop = hover, klik nech projít na /customer
@@ -241,6 +242,7 @@
         viditelné jen ve stavu .jk-sticky (viz CSS sekce 6)
      ============================================================ */
   var SVG = {
+    menu: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>',
     search: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>',
     user: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
     bag: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'
@@ -454,6 +456,48 @@
     }
   }
 
+  /* ============================================================
+     I) Mobilní spodní lišta (bottom bar): Menu · Hledat · Košík · Účet
+        jen <992px (CSS). Využívá mobilní menu, login modal a košík.
+     ============================================================ */
+  function buildBottomBar() {
+    if (document.querySelector('.jk-botbar')) return;
+    var cart = document.querySelector('a.shopping-basket');
+    var cartHref = cart ? cart.getAttribute('href') : '#';
+    var accLink = document.querySelector('a.customer-button');
+    var accHref = accLink ? accLink.getAttribute('href') : '#';
+    var countEl = document.querySelector('.shopping-basket-items-count');
+    var count = countEl ? countEl.textContent.trim() : '0';
+
+    var bar = el('nav', 'jk-botbar jk-injected');
+    bar.innerHTML =
+      '<button type="button" class="jk-botbar__item" data-act="menu" aria-label="Menu"><span class="jk-botbar__ico">' + SVG.menu + '</span><span class="jk-botbar__lbl">Menu</span></button>' +
+      '<button type="button" class="jk-botbar__item" data-act="search" aria-label="Hledat"><span class="jk-botbar__ico">' + SVG.search + '</span><span class="jk-botbar__lbl">Hledat</span></button>' +
+      '<a class="jk-botbar__item jk-botbar__item--cart" href="' + cartHref + '" aria-label="Košík"><span class="jk-botbar__ico">' + SVG.bag + '<span class="jk-botbar__badge"' + (count === '0' ? ' hidden' : '') + '>' + count + '</span></span><span class="jk-botbar__lbl">Košík</span></a>' +
+      '<a class="jk-botbar__item" data-act="account" href="' + accHref + '" aria-label="Účet"><span class="jk-botbar__ico">' + SVG.user + '</span><span class="jk-botbar__lbl">Účet</span></a>';
+    document.body.appendChild(bar);
+
+    bar.querySelector('[data-act=menu]').addEventListener('click', function (e) { e.preventDefault(); if (JK.openMobMenu) JK.openMobMenu(); });
+    bar.querySelector('[data-act=search]').addEventListener('click', function (e) {
+      e.preventDefault();
+      var s = document.querySelector('#searchInput');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (s) setTimeout(function () { s.focus(); }, 350);
+    });
+    bar.querySelector('[data-act=account]').addEventListener('click', function (e) {
+      if (JK.openLogin) { e.preventDefault(); JK.openLogin(); } // nepřihlášený → modal; přihlášený nech projít na /customer
+    });
+
+    // sync počtu košíku do badge
+    var badge = bar.querySelector('.jk-botbar__badge');
+    function sync() {
+      var c = countEl ? countEl.textContent.trim() : '0';
+      badge.textContent = c;
+      if (c === '0' || c === '') badge.setAttribute('hidden', ''); else badge.removeAttribute('hidden');
+    }
+    if (countEl && window.MutationObserver) new MutationObserver(sync).observe(countEl, { childList: true, characterData: true, subtree: true });
+  }
+
   ready(function () {
     document.documentElement.classList.add('jk-ready');
     try { buildUSP(); } catch (e) { console.warn('[JK] USP', e); }
@@ -462,6 +506,7 @@
     try { buildAllCats(); } catch (e) { console.warn('[JK] allcats', e); }
     try { buildMobileMenu(); } catch (e) { console.warn('[JK] mobmenu', e); }
     try { buildLoginPopup(); } catch (e) { console.warn('[JK] loginpopup', e); }
+    try { buildBottomBar(); } catch (e) { console.warn('[JK] botbar', e); }
     try { buildStickyBar(); } catch (e) { console.warn('[JK] stickybar', e); }
     try { initUnfold(); } catch (e) { console.warn('[JK] unfold', e); }
     try { initItembox(); } catch (e) { console.warn('[JK] itembox', e); }
