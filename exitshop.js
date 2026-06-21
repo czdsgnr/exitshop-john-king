@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.6.9';
+  JK.version = '0.7.0';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -63,6 +63,13 @@
     if (count.trim() !== '0' && total) {
       cart.appendChild(el('span', 'jk-cart__total jk-injected', total));
     }
+  }
+
+  /* ikona účtu – label „Můj účet" před ikonu (CSS ji přes flex order dá před ::before; mobil = jen ikona) */
+  function buildAccountLabel() {
+    var acc = document.querySelector('a.customer-button');
+    if (!acc || acc.querySelector('.jk-acc__label')) return;
+    acc.appendChild(el('span', 'jk-acc__label jk-injected', 'Můj účet'));
   }
 
   /* ============================================================
@@ -449,6 +456,7 @@
     document.documentElement.classList.add('jk-ready');
     try { buildUSP(); } catch (e) { console.warn('[JK] USP', e); }
     try { buildCartPill(); } catch (e) { console.warn('[JK] cart', e); }
+    try { buildAccountLabel(); } catch (e) { console.warn('[JK] acclabel', e); }
     try { buildAllCats(); } catch (e) { console.warn('[JK] allcats', e); }
     try { buildMobileMenu(); } catch (e) { console.warn('[JK] mobmenu', e); }
     try { buildLoginPopup(); } catch (e) { console.warn('[JK] loginpopup', e); }

@@ -339,6 +339,14 @@ html.jk-mobmenu-open { overflow: hidden; }
    Heslo jde jen na vlastní shop (stejně jako nativní login).
    ------------------------------------------------------------ */
 .header-shop-customer-button { position: relative; }
+
+/* label „Můj účet" před ikonou účtu (ikona je ::before → přes flex order ji dáme až za text).
+   Na mobilu skryté – jen ikona, ať se hlavička nepřeplácá. */
+a.customer-button { gap: 8px; }
+a.customer-button::before { order: 1; }
+.jk-acc__label { order: 0; font-size: 14px; font-weight: 600; color: var(--jk-black) !important; white-space: nowrap; line-height: 1; }
+@media (max-width: 991.98px) { .jk-acc__label { display: none !important; } }
+
 .jk-login-pop {
   display: none; position: absolute; top: 100%; right: 0; margin-top: 14px; z-index: 1200;
   width: 600px; max-width: calc(100vw - 32px); background: #fff; border: 1px solid var(--jk-line);
