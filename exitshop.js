@@ -7,7 +7,7 @@
   'use strict';
 
   var JK = (window.JK = window.JK || {});
-  JK.version = '0.7.2';
+  JK.version = '0.7.3';
 
   /* ---- konfigurace ---- */
   // USP položky do běžící lišty (uprav dle potřeby)
@@ -42,6 +42,7 @@
     }).join('');
     var usp = el('div', 'jk-usp jk-injected', '<div class="jk-usp__track">' + items + items + '</div>');
     header.insertBefore(usp, header.firstChild);
+    header.classList.add('jk-usp-ready'); // schová CSS placeholder (rezervovanou výšku) → žádné uskočení
   }
 
   /* ============================================================

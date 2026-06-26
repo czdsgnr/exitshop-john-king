@@ -34,6 +34,10 @@ header > nav.main-nav { display: none !important; }   /* starý utility řádek 
 .jk-usp { background: var(--jk-black); color: #fff; overflow: hidden; height: 44px; display: flex; align-items: center; }
 .jk-usp__track { display: flex; align-items: center; white-space: nowrap; animation: jk-marquee 38s linear infinite; will-change: transform; }
 .jk-usp:hover .jk-usp__track { animation-play-state: paused; }
+/* placeholder USP lišty – drží 44px nahoře, DOKUD JS lištu nevloží → obsah neuskočí (žádný CLS).
+   buildUSP po vložení přidá .jk-usp-ready na <header> a placeholder zmizí (stejná výška = beze skoku). */
+header::before { content: ''; display: block; height: 44px; background: var(--jk-black); }
+header.jk-usp-ready::before { display: none; }
 .jk-usp__item { display: inline-flex; align-items: center; gap: 9px; padding: 0 30px; position: relative; font-size: 13px; font-weight: 500; color: #fff; letter-spacing: .01em; }
 .jk-usp__item::after { content: ''; position: absolute; right: -4px; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--jk-pink); transform: translateY(-50%); }
 .jk-usp__ico { font-size: 15px; }
@@ -297,6 +301,7 @@ a.shopping-basket .shopping-basket-items-count {
 
   /* USP marquee o kousek nižší */
   .jk-usp { height: 38px; }
+  header::before { height: 38px; } /* placeholder USP stejně vysoký jako lišta na mobilu */
   .jk-usp__item { padding: 0 20px; font-size: 12px; }
 
   /* nativní accordion v hamburgeru – pryč se starým pink pozadím */
