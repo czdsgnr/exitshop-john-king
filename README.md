@@ -12,11 +12,31 @@ GitHub Pages, branch `main`:
 - `https://czdsgnr.github.io/exitshop-john-king/exitshop.css`
 - `https://czdsgnr.github.io/exitshop-john-king/exitshop.js`
 
-## Vložení do Exitshopu (vývojový režim – bez cache)
+## ⭐ PRODUKČNÍ nasazení (ostrý web – BEZ problikávání)
 
-V adminu: **Vzhled → Skripty → Přidat** → název např. `John King – custom CSS/JS`,
-umístění **Na všech stránkách**. Vlož tento načítací skript (přidává `?t=` timestamp,
-takže každé načtení bere čerstvou verzi – řeší cache na mobilu i desktopu):
+**Důležité:** vývojový loader (níže) injektuje CSS až *po* vykreslení → na chvíli
+probleskne původní šablona (modré menu). Na ostrém webu se musí CSS načítat
+**render-blocking v hlavičce** + cachovat. Pak se modré menu vůbec neukáže.
+
+1. **Vzhled → Vaše CSS** (úplně nahoru, PRVNÍ řádek – `@import` musí být první):
+   ```css
+   @import url("https://czdsgnr.github.io/exitshop-john-king/exitshop.css?v=1");
+   ```
+2. **Vzhled → Skripty** (smazat dev-loader, dát jen tohle):
+   ```html
+   <script src="https://czdsgnr.github.io/exitshop-john-king/exitshop.js?v=1" defer></script>
+   ```
+
+CSS se aplikuje od prvního vykreslení → žádný flash původních barev/menu. Cache přes
+`?v=1`. **Po každé úpravě zvednout `?v=1` → `?v=2` …** (vyčistí cache u návštěvníků).
+
+> (Ideál, pokud admin umožní vlastní HTML v `<head>`: místo `@import` dát
+> `<link rel="stylesheet" href="…/exitshop.css?v=1">` přímo do hlavičky – paralelní načtení.)
+
+## Vývojový režim (jen při úpravách – ZPŮSOBUJE flash, na ostro nepoužívat)
+
+`?t=Date.now()` = vždy čerstvá verze bez cache, ale injektuje se pozdě → problikává.
+V adminu **Vzhled → Skripty → Na všech stránkách**:
 
 ```html
 <script>
@@ -32,12 +52,6 @@ takže každé načtení bere čerstvou verzi – řeší cache na mobilu i desk
 })();
 </script>
 ```
-
-> Pole **Vzhled → Vaše CSS** se nepoužívá pro nové úpravy – vše je verzované tady.
-> Staré inline CSS v „Vaše CSS" postupně přesuneme do `exitshop.css`.
-
-Až bude hotovo, přepnout na statický `<link>`/`<script>` s pevným `?v=` (rychlejší
-pro návštěvníky, využije cache).
 
 ## Deploy workflow
 Edit → commit → push. GitHub Pages build trvá ~1–2 min, pak stačí refresh e‑shopu
